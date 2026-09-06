@@ -52,4 +52,4 @@ Produtos com maior valor unitário podem representar uma parcela significativa d
 
 O notebook com todo o código e as análises está disponível neste repositório:
 
-`analise_vendas.ipynb`
+[analise_vendas.ipynb](./analise_vendas.ipynb)
