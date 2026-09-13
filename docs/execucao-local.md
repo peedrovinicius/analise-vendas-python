@@ -4,7 +4,7 @@
 
 Baixe o **Brazilian E-Commerce Public Dataset by Olist** diretamente da fonte indicada em `docs/fonte-dados.md`.
 
-Não coloque os arquivos brutos no GitHub. O `.gitignore` do projeto já bloqueia os diretórios de dados brutos e processados.
+Os arquivos brutos não devem ser versionados no GitHub. O `.gitignore` bloqueia os diretórios de dados brutos e processados.
 
 ## 2. Estrutura esperada
 
@@ -30,22 +30,42 @@ product_category_name_translation.csv
 
 ## 3. Instalar dependências
 
-No ambiente virtual do projeto:
+Na raiz do repositório, de preferência em um ambiente virtual:
 
 ```bash
 pip install -r requirements.txt
+pip install -e . --no-deps
 ```
 
-## 4. Executar a auditoria
+## 4. Executar o pipeline oficial
 
-Na raiz do repositório:
+```bash
+python scripts/run_pipeline.py
+```
+
+O script chama `src.pipeline.run_pipeline`, que executa ingestão, validação de schema, transformação e cálculo dos KPIs consolidados.
+
+## 5. Executar a auditoria dos arquivos
 
 ```bash
 python scripts/auditar_olist.py
 ```
 
-O script não altera os dados. Ele informa, para cada arquivo, quantidade de linhas, quantidade de colunas, linhas duplicadas, células nulas, colunas com nulos, chaves configuradas e possíveis duplicidades nessas chaves.
+A auditoria informa características estruturais dos arquivos, incluindo volume, colunas, nulos, duplicidades e verificações de chaves. Ela não altera os dados.
 
-## 5. Próxima etapa
+## 6. Executar os testes e gates de qualidade
 
-Os resultados da execução serão usados para preencher `docs/qualidade-dados.md` com números reais e definir as regras de tratamento antes da criação de métricas.
+```bash
+ruff format --check src tests scripts
+ruff check src tests scripts
+mypy src
+pytest -q --cov=src --cov-branch --cov-report=term-missing --cov-fail-under=80
+pip-audit -r requirements.txt
+pre-commit run --all-files
+```
+
+Esses mesmos gates são executados automaticamente pelo workflow de CI em `.github/workflows/ci.yml`.
+
+## Resultado esperado
+
+Com a versão atual da base utilizada no projeto, a execução do pipeline reproduz os KPIs consolidados documentados em `docs/insights-iniciais.md` e `docs/insights-negocio.md`.
