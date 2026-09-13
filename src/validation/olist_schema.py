@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import pandas as pd
 import pandera.pandas as pa
+import pandas as pd
 
 ORDERS_SCHEMA = pa.DataFrameSchema(
     {
