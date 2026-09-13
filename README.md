@@ -53,10 +53,16 @@ Pedidos com outros status permanecem disponíveis para análises operacionais, m
 │   ├── execucao-local.md
 │   ├── fonte-dados.md
 │   ├── insights-iniciais.md
+│   ├── insights-negocio.md
 │   ├── modelo-dados.md
-│   └── qualidade-dados.md
+│   ├── qualidade-dados.md
+│   └── visualizacoes.md
 ├── notebooks/
 │   └── analise_olist.ipynb
+├── assets/
+│   ├── evolucao-mensal.svg
+│   ├── receita-por-uf.svg
+│   └── receita-por-categoria.svg
 ├── scripts/
 │   ├── auditar_olist.py
 │   └── run_pipeline.py
@@ -79,7 +85,7 @@ A análise atual está em [notebooks/analise_olist.ipynb](./notebooks/analise_ol
 
 ## Resultados atuais
 
-Os primeiros resultados oficiais da nova versão estão documentados em [docs/insights-iniciais.md](./docs/insights-iniciais.md).
+Os resultados oficiais da nova versão estão documentados em [docs/insights-negocio.md](./docs/insights-negocio.md) e os primeiros indicadores em [docs/insights-iniciais.md](./docs/insights-iniciais.md).
 
 ## Status
 
