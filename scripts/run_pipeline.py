@@ -1,5 +1,7 @@
 """Executa o pipeline oficial e imprime os KPIs calculados."""
 
+# isort: skip_file
+
 from __future__ import annotations
 
 import json
