@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430">
 <rect width="1000" height="430" fill="white"/>
-<text x="80" y="35" font-family="Arial" font-size="22" font-weight="bold">Receita de itens por mês — pedidos entregues</text>
+<text x="80" y="35" font-family="Arial" font-size="22" font-weight="bold">Receita de itens por mês: pedidos entregues</text>
 <line x1="80" y1="350" x2="960" y2="350" stroke="#999"/>
 <line x1="80" y1="70" x2="80" y2="350" stroke="#999"/>
 <polyline points="80.0,350.0 117.8,339.6 194.6,350.0 233.6,321.2 272.6,289.6 307.9,257.4 346.9,262.2 384.7,223.9 423.7,241.3 461.5,225.9 500.5,207.1 539.5,193.5 577.3,182.9 616.3,95.5 654.1,162.9 693.1,111.7 732.1,137.0 767.4,104.3 806.4,99.1 844.2,98.1 883.2,129.4 921.0,126.3 960.0,133.9" fill="none" stroke="#4472C4" stroke-width="3"/>
