@@ -41,10 +41,8 @@ def calculate_sales_kpis(sales: pd.DataFrame) -> dict[str, float | int]:
         "total_orders": total_orders,
         "total_customers": total_customers,
         "total_products": total_products,
-        "average_order_value": (
-            gross_revenue / total_orders if total_orders else 0.0
-        ),
-        "average_item_price": (
-            gross_revenue / total_items if total_items else 0.0
-        ),
+        "average_order_value": gross_revenue / total_orders
+        if total_orders
+        else 0.0,
+        "average_item_price": gross_revenue / total_items if total_items else 0.0,
     }
