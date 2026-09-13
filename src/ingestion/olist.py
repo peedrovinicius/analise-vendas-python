@@ -32,4 +32,6 @@ def load_olist_tables(data_dir: str | Path) -> dict[str, pd.DataFrame]:
     """Carrega os nove arquivos Olist usando nomes canônicos de tabela."""
     validate_source_directory(data_dir)
     path = Path(data_dir)
-    return {table_name: pd.read_csv(path / file_name) for table_name, file_name in DATASET_FILES.items()}
+    return {
+        table_name: pd.read_csv(path / file_name) for table_name, file_name in DATASET_FILES.items()
+    }
