@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="440" viewBox="0 0 900 440">
 <rect width="900" height="440" fill="white"/>
-<text x="240" y="30" font-family="Arial" font-size="22" font-weight="bold">Top 10 estados por receita — pedidos entregues</text>
+<text x="240" y="30" font-family="Arial" font-size="22" font-weight="bold">Receita por UF: pedidos entregues</text>
 <text x="230" y="90" text-anchor="end" font-family="Arial" font-size="13">ES</text><rect x="240" y="75" width="27.0" height="22" fill="#4472C4"/><text x="275" y="91" font-family="Arial" font-size="12">R$ 268.643</text>
 <text x="230" y="124" text-anchor="end" font-family="Arial" font-size="13">GO</text><rect x="240" y="109" width="28.5" height="22" fill="#4472C4"/><text x="276.5" y="125" font-family="Arial" font-size="12">R$ 282.837</text>
 <text x="230" y="158" text-anchor="end" font-family="Arial" font-size="13">DF</text><rect x="240" y="143" width="29.8" height="22" fill="#4472C4"/><text x="277.8" y="159" font-family="Arial" font-size="12">R$ 296.498</text>
