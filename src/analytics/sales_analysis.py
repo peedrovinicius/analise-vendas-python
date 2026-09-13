@@ -89,6 +89,31 @@ def customer_purchase_frequency(sales: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def customer_metrics(sales: pd.DataFrame) -> pd.DataFrame:
+    """Calcula métricas individuais de frequência e valor por cliente."""
+    customers = customer_purchase_frequency(sales)
+    if customers.empty:
+        return pd.DataFrame(
+            columns=[
+                "customer_unique_id",
+                "revenue",
+                "orders",
+                "items",
+                "average_order_value",
+                "items_per_order",
+                "customer_segment",
+            ]
+        )
+
+    result = customers.copy()
+    result["average_order_value"] = result["revenue"].div(result["orders"])
+    result["items_per_order"] = result["items"].div(result["orders"])
+    result["customer_segment"] = result["orders"].gt(1).map(
+        {True: "repeat", False: "one_time"}
+    )
+    return result
+
+
 def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
     """Resume clientes em segmentos de compra única e recorrente."""
     customers = customer_purchase_frequency(sales)
