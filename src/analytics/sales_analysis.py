@@ -91,6 +91,47 @@ def customer_purchase_frequency(sales: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
+    """Resume clientes em segmentos de compra única e recorrente."""
+    customers = customer_purchase_frequency(sales)
+    if customers.empty:
+        return pd.DataFrame(
+            columns=[
+                "customer_segment",
+                "customers",
+                "orders",
+                "items",
+                "revenue",
+                "revenue_share",
+                "average_orders_per_customer",
+                "average_revenue_per_customer",
+            ]
+        )
+
+    customers["customer_segment"] = customers["orders"].gt(1).map(
+        {True: "repeat", False: "one_time"}
+    )
+    result = (
+        customers.groupby("customer_segment", as_index=False)
+        .agg(
+            customers=("customer_unique_id", "nunique"),
+            orders=("orders", "sum"),
+            items=("items", "sum"),
+            revenue=("revenue", "sum"),
+        )
+        .sort_values("revenue", ascending=False)
+    )
+    total = result["revenue"].sum()
+    result["revenue_share"] = result["revenue"].div(total) if total else 0.0
+    result["average_orders_per_customer"] = result["orders"].div(
+        result["customers"]
+    )
+    result["average_revenue_per_customer"] = result["revenue"].div(
+        result["customers"]
+    )
+    return result
+
+
 def repeat_customer_rate(sales: pd.DataFrame) -> float:
     """Calcula a proporção de clientes únicos com mais de um pedido."""
     customers = customer_purchase_frequency(sales)
