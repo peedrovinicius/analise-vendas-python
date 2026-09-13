@@ -41,9 +41,11 @@ def test_monthly_sales_calculates_aov_and_growth() -> None:
     assert result.loc[1, "revenue_mom_growth"] == pytest.approx(1.5)
 
 
-def test_sales_by_state_calculates_share() -> None:
+def test_sales_by_state_calculates_share_and_aov() -> None:
     result = sales_by_state(_sales())
-    assert result.loc[result["customer_state"] == "SP", "revenue"].iloc[0] == pytest.approx(200.0)
+    row = result.loc[result["customer_state"] == "SP"].iloc[0]
+    assert row["revenue"] == pytest.approx(200.0)
+    assert row["average_order_value"] == pytest.approx(200.0)
     assert result["revenue_share"].sum() == pytest.approx(1.0)
 
 
@@ -67,10 +69,11 @@ def test_customer_purchase_frequency_counts_distinct_orders() -> None:
     assert row["revenue"] == pytest.approx(150.0)
 
 
-def test_category_revenue_calculates_share() -> None:
+def test_category_revenue_calculates_share_and_aov() -> None:
     result = category_revenue(_sales())
     row = result.loc[result["product_category_name_english"] == "sports"].iloc[0]
     assert row["revenue"] == pytest.approx(200.0)
+    assert row["average_order_value"] == pytest.approx(200.0)
     assert result["revenue_share"].sum() == pytest.approx(1.0)
 
 
