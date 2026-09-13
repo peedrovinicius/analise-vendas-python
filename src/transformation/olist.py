@@ -2,18 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pandas as pd
 
 from src.ingestion.olist import load_olist_tables
 
 REALIZED_ORDER_STATUSES = {"delivered"}
-
-
-def load_olist_tables_for_transformation(raw_dir: str | Path) -> dict[str, pd.DataFrame]:
-    """Mantém uma interface compatível para chamadas antigas do módulo."""
-    return load_olist_tables(raw_dir)
 
 
 def build_item_sales_fact(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
