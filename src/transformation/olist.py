@@ -1,4 +1,4 @@
-"""Transformações analíticas para o dataset Brazilian E-Commerce Public Dataset by Olist."""
+"""Transformações analíticas para o Brazilian E-Commerce Public Dataset by Olist."""
 
 from __future__ import annotations
 
@@ -8,36 +8,44 @@ import pandas as pd
 
 REALIZED_ORDER_STATUSES = {"delivered"}
 
+EXPECTED_FILES = {
+    "customers": "olist_customers_dataset.csv",
+    "geolocation": "olist_geolocation_dataset.csv",
+    "order_items": "olist_order_items_dataset.csv",
+    "order_payments": "olist_order_payments_dataset.csv",
+    "order_reviews": "olist_order_reviews_dataset.csv",
+    "orders": "olist_orders_dataset.csv",
+    "products": "olist_products_dataset.csv",
+    "sellers": "olist_sellers_dataset.csv",
+    "category_translation": "product_category_name_translation.csv",
+}
+
 
 def load_olist_tables(raw_dir: str | Path) -> dict[str, pd.DataFrame]:
-    """Carrega os nove arquivos CSV esperados da base Olist."""
+    """Carrega os nove CSVs esperados a partir do diretório de dados brutos."""
     raw_path = Path(raw_dir)
-    files = {
-        "customers": "olist_customers_dataset.csv",
-        "geolocation": "olist_geolocation_dataset.csv",
-        "order_items": "olist_order_items_dataset.csv",
-        "order_payments": "olist_order_payments_dataset.csv",
-        "order_reviews": "olist_order_reviews_dataset.csv",
-        "orders": "olist_orders_dataset.csv",
-        "products": "olist_products_dataset.csv",
-        "sellers": "olist_sellers_dataset.csv",
-        "category_translation": "product_category_name_translation.csv",
-    }
-
-    missing = [name for name in files.values() if not (raw_path / name).exists()]
+    missing = [
+        filename
+        for filename in EXPECTED_FILES.values()
+        if not (raw_path / filename).is_file()
+    ]
     if missing:
         raise FileNotFoundError(
             f"Arquivos Olist ausentes em {raw_path}: {', '.join(missing)}"
         )
 
-    return {key: pd.read_csv(raw_path / filename) for key, filename in files.items()}
+    return {
+        table_name: pd.read_csv(raw_path / filename)
+        for table_name, filename in EXPECTED_FILES.items()
+    }
 
 
 def build_item_sales_fact(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """Constrói uma visão analítica no nível de item de pedido.
 
-    Pagamentos e avaliações não são incorporados diretamente porque possuem
-    cardinalidade potencialmente 1:N por pedido e poderiam duplicar métricas.
+    ``order_items`` define a granularidade. Dimensões 1:N por pedido, como
+    pagamentos e avaliações, não são agregadas diretamente para evitar
+    duplicação de métricas.
     """
     orders = tables["orders"].copy()
     items = tables["order_items"].copy()
@@ -51,24 +59,23 @@ def build_item_sales_fact(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     )
 
     sales = items.merge(
-        orders[[
-            "order_id",
-            "customer_id",
-            "order_status",
-            "order_purchase_timestamp",
-        ]],
+        orders[
+            [
+                "order_id",
+                "customer_id",
+                "order_status",
+                "order_purchase_timestamp",
+            ]
+        ],
         on="order_id",
         how="left",
         validate="many_to_one",
     )
 
     sales = sales.merge(
-        customers[[
-            "customer_id",
-            "customer_unique_id",
-            "customer_city",
-            "customer_state",
-        ]],
+        customers[
+            ["customer_id", "customer_unique_id", "customer_city", "customer_state"]
+        ],
         on="customer_id",
         how="left",
         validate="many_to_one",
@@ -98,7 +105,7 @@ def build_item_sales_fact(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     sales["gross_item_value"] = sales["price"]
     sales["total_item_value"] = sales["price"] + sales["freight_value"]
     sales["is_realized_sale"] = sales["order_status"].isin(REALIZED_ORDER_STATUSES)
-    sales["purchase_date"] = sales["order_purchase_timestamp"].dt.date
+    sales["purchase_date"] = sales["order_purchase_timestamp"].dt.normalize()
     sales["purchase_year"] = sales["order_purchase_timestamp"].dt.year.astype("Int64")
     sales["purchase_month"] = sales["order_purchase_timestamp"].dt.month.astype("Int64")
 
