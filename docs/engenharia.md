@@ -51,7 +51,7 @@ O notebook atua como camada de exploração e comunicação e não deve duplicar
 
 ## Testes
 
-Os testes cobrem ingestão, schema, transformação, KPIs, análises de negócio e orquestração. A CI exige cobertura mínima de 80% sobre `src/` e cobertura de branches.
+Os testes cobrem ingestão, schema, transformação, KPIs e análises de negócio. A CI exige cobertura mínima de 80% sobre `src/` e cobertura de branches.
 
 O percentual é um gate de regressão; o objetivo principal é proteger comportamentos e regras de negócio relevantes.
 
