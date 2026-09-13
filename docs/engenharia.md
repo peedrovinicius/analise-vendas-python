@@ -18,7 +18,7 @@ A camada de engenharia existe para tornar o fluxo de dados reproduzível, testá
 - pre-commit para qualidade local;
 - GitHub Actions para automação dos gates.
 
-As versões de bibliotecas foram conferidas nas releases publicadas no PyPI em setembro de 2026, incluindo Pandas 3.0.5, Matplotlib 3.11.2, Pandera 0.33.1, Pytest 9.1.1, pytest-cov 7.1.0, Ruff 0.16.7, Mypy 2.3.1, pip-audit 2.10.1 e pre-commit 4.6.2. citeturn292678search1turn917172search0turn917929search0turn917172search3turn917172search1turn917929search1turn917929search9turn292678search11turn917172search4
+As versões utilizadas estão fixadas no projeto e refletem o ambiente validado pela CI.
 
 ## Gates de qualidade
 
