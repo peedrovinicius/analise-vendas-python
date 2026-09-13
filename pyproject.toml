@@ -6,21 +6,21 @@ build-backend = "setuptools.build_meta"
 name = "sistema-gestao-analise-vendas"
 version = "0.1.0"
 description = "Projeto de dados e aplicação baseado no Brazilian E-Commerce Public Dataset by Olist."
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.11,<3.12"
 dependencies = [
     "pandas==3.0.5",
     "matplotlib==3.11.2",
-    "jupyter==1.1.1",
     "pandera==0.33.1",
 ]
 
 [project.optional-dependencies]
 dev = [
+    "jupyterlab==4.6.3",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
     "ruff==0.16.7",
     "mypy==2.3.1",
-    "pip-audit==2.10.0",
+    "pip-audit==2.10.1",
     "pre-commit==4.6.2",
 ]
 
