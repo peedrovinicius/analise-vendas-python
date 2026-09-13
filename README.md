@@ -55,6 +55,8 @@ Pedidos com outros status permanecem disponíveis para análises operacionais, m
 │   ├── insights-iniciais.md
 │   ├── modelo-dados.md
 │   └── qualidade-dados.md
+├── notebooks/
+│   └── analise_olist.ipynb
 ├── scripts/
 │   ├── auditar_olist.py
 │   └── run_pipeline.py
@@ -73,7 +75,7 @@ Pedidos com outros status permanecem disponíveis para análises operacionais, m
 
 ## Notebook
 
-O arquivo [analise_vendas.ipynb](./analise_vendas.ipynb) apresenta a análise exploratória atual com base nos dados da Olist, incluindo KPIs, evolução mensal, receita por estado, categorias de produtos e recorrência de clientes.
+A análise atual está em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb). O notebook antigo permanece temporariamente em `analise_vendas.ipynb` apenas como registro da versão inicial e será removido após a validação final da nova análise.
 
 ## Resultados atuais
 
