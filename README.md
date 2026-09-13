@@ -10,7 +10,7 @@ Projeto de engenharia e análise de dados construído a partir do **Brazilian E-
 
 O projeto demonstra um fluxo completo de dados em Python, incluindo ingestão, validação de schema, transformação, cálculo de indicadores, testes automatizados, análise de qualidade e documentação dos resultados.
 
-A versão atual utiliza exclusivamente os dados públicos da Olist. A base fictícia utilizada na versão inicial foi descontinuada.
+A versão atual utiliza exclusivamente os dados públicos da Olist.
 
 ## Objetivos analíticos
 
@@ -138,7 +138,7 @@ O projeto possui CI automatizado com Ruff, mypy, pytest + coverage, pip-audit e 
 
 ## Notebook
 
-A análise atual está em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb). O notebook antigo permanece em `analise_vendas.ipynb` como registro da versão inicial.
+A análise exploratória e a apresentação dos resultados estão em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb).
 
 ## Status
 
