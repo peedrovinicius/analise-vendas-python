@@ -90,9 +90,7 @@ def repeat_customer_rate(sales: pd.DataFrame) -> float:
 def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita, itens e pedidos por categoria traduzida."""
     realized = sales.loc[sales["is_realized_sale"]].copy()
-    result = realized.groupby(
-        "product_category_name_english", dropna=False, as_index=False
-    ).agg(
+    result = realized.groupby("product_category_name_english", dropna=False, as_index=False).agg(
         revenue=("price", "sum"),
         items=("order_item_id", "size"),
         orders=("order_id", "nunique"),
@@ -103,9 +101,7 @@ def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
-def top_n_revenue_share(
-    grouped: pd.DataFrame, n: int, revenue_column: str = "revenue"
-) -> float:
+def top_n_revenue_share(grouped: pd.DataFrame, n: int, revenue_column: str = "revenue") -> float:
     """Retorna a participação da receita concentrada nos n primeiros grupos."""
     if n <= 0 or grouped.empty:
         return 0.0
