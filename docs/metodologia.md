@@ -1,29 +1,43 @@
 # Metodologia
 
-O projeto será desenvolvido em etapas, partindo de uma fonte pública de dados e evoluindo até uma aplicação de gestão e análise de vendas.
+O projeto utiliza dados públicos do **Brazilian E-Commerce Public Dataset by Olist** para construir uma análise reproduzível de vendas e faturamento.
 
-## Etapas
+## Fluxo analítico
 
 1. Identificação e documentação da fonte pública.
-2. Ingestão dos dados.
-3. Auditoria de qualidade.
-4. Tratamento e transformação.
-5. Definição da granularidade e das regras de negócio.
-6. Construção das métricas.
-7. Análise exploratória e analítica.
-8. Visualização e comunicação dos resultados.
-9. Testes automatizados e validações.
-10. Evolução para backend, frontend e publicação, conforme a necessidade do projeto.
+2. Ingestão dos nove arquivos CSV.
+3. Auditoria de qualidade e estrutura.
+4. Validação das tabelas críticas.
+5. Transformação para a granularidade analítica de item de pedido.
+6. Aplicação das regras de negócio para definir vendas realizadas.
+7. Construção dos indicadores de vendas, clientes, categorias, estados e vendedores.
+8. Análise exploratória e visualização dos resultados.
+9. Testes automatizados, verificação de tipos e auditoria de dependências.
+10. Documentação dos resultados e limitações.
+
+## Granularidade e regras de negócio
+
+`order_items` é a referência transacional para os indicadores de receita dos itens.
+
+Para os KPIs de receita realizada, são considerados itens associados a pedidos com `order_status = delivered`.
+
+`price` é tratado como receita dos itens. `freight_value` permanece separado e não é incorporado automaticamente à receita de produto.
+
+Relacionamentos com tabelas que podem possuir múltiplos registros por pedido, como pagamentos e avaliações, exigem tratamento específico de cardinalidade antes de qualquer agregação conjunta.
 
 ## Princípios
 
-- utilizar dados públicos e identificáveis;
+- utilizar dados públicos e resultados reproduzíveis;
 - não inventar dados ou resultados;
-- documentar decisões de tratamento;
-- separar dados brutos, dados processados e lógica de negócio;
-- priorizar soluções simples quando forem suficientes;
-- adicionar tecnologias somente quando houver justificativa técnica.
+- manter rastreabilidade entre dados, transformação e métricas;
+- preservar a granularidade definida para cada indicador;
+- documentar limitações e decisões de tratamento;
+- adicionar complexidade somente quando houver justificativa técnica.
 
-## Status
+## Estado atual
 
-A metodologia está definida. As análises e regras específicas serão registradas após a auditoria da base da Olist.
+A ingestão, validação, transformação, cálculo dos KPIs, análises de negócio e testes automatizados estão implementados.
+
+Os resultados publicados em `docs/insights-negocio.md` foram recalculados e conferidos contra `docs/insights-iniciais.md`.
+
+A camada de visualização já possui artefatos documentados em `docs/visualizacoes.md`. Evoluções futuras podem adicionar uma aplicação web sem alterar as regras analíticas consolidadas na camada `src/`.
