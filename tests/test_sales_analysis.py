@@ -3,6 +3,7 @@ import pytest
 
 from src.analytics.sales_analysis import (
     category_revenue,
+    customer_metrics,
     customer_purchase_frequency,
     customer_segment_summary,
     monthly_sales,
@@ -59,6 +60,17 @@ def test_sales_by_seller_calculates_revenue_and_share() -> None:
     assert row["items"] == 2
     assert row["orders"] == 2
     assert result["revenue_share"].sum() == pytest.approx(1.0)
+
+
+def test_customer_metrics_adds_frequency_value_and_segment_fields() -> None:
+    result = customer_metrics(_sales())
+    row = result.loc[result["customer_unique_id"] == "c1"].iloc[0]
+    assert row["revenue"] == pytest.approx(150.0)
+    assert row["orders"] == 2
+    assert row["items"] == 2
+    assert row["average_order_value"] == pytest.approx(75.0)
+    assert row["items_per_order"] == pytest.approx(1.0)
+    assert row["customer_segment"] == "repeat"
 
 
 def test_repeat_customer_rate_uses_unique_customer_id() -> None:
@@ -140,6 +152,7 @@ def test_analytics_return_empty_results_without_realized_sales() -> None:
     assert monthly_sales(sales).empty
     assert sales_by_state(sales).empty
     assert sales_by_seller(sales).empty
+    assert customer_metrics(sales).empty
     assert customer_purchase_frequency(sales).empty
     assert customer_segment_summary(sales).empty
     assert category_revenue(sales).empty
