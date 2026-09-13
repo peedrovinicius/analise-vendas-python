@@ -129,7 +129,9 @@ def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
             ]
         )
 
-    customers["customer_segment"] = customers["orders"].gt(1).map({True: "repeat", False: "one_time"})
+    customers["customer_segment"] = (
+        customers["orders"].gt(1).map({True: "repeat", False: "one_time"})
+    )
     result = (
         customers.groupby("customer_segment", as_index=False)
         .agg(
