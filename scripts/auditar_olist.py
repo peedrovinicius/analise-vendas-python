@@ -13,7 +13,6 @@ import pandas as pd
 
 from src.ingestion.olist import EXPECTED_FILES, load_olist_data
 
-
 DATA_DIR = Path("dados/raw")
 
 KEY_COLUMNS = {
