@@ -2,7 +2,12 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.ingestion.olist import DATASET_FILES, EXPECTED_FILES, load_olist_tables, validate_source_directory
+from src.ingestion.olist import (
+    DATASET_FILES,
+    EXPECTED_FILES,
+    load_olist_tables,
+    validate_source_directory,
+)
 
 
 def _write_all_expected_files(tmp_path: Path) -> None:
