@@ -47,7 +47,7 @@ def sales_by_state(sales: pd.DataFrame) -> pd.DataFrame:
     result["average_order_value"] = result["revenue"].div(result["orders"])
     total = result["revenue"].sum()
     result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    result["freight_to_revenue"] = result["freight"].div(result["revenue"]).fillna(0.0)
+    result["freight_to_revenue"] = result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
     return result
 
 
@@ -103,7 +103,7 @@ def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     result["average_order_value"] = result["revenue"].div(result["orders"])
     total = result["revenue"].sum()
     result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    result["freight_to_revenue"] = result["freight"].div(result["revenue"]).fillna(0.0)
+    result["freight_to_revenue"] = result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
     return result
 
 
