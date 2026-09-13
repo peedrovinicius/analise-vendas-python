@@ -1,32 +1,26 @@
 """Ingestão dos arquivos CSV do Brazilian E-Commerce Public Dataset by Olist."""
 
 from pathlib import Path
-from typing import Dict
 
 import pandas as pd
 
-EXPECTED_FILES = (
-    "olist_orders_dataset.csv",
-    "olist_order_items_dataset.csv",
-    "olist_customers_dataset.csv",
-    "olist_products_dataset.csv",
-    "olist_sellers_dataset.csv",
-    "olist_order_payments_dataset.csv",
-    "olist_order_reviews_dataset.csv",
-    "olist_geolocation_dataset.csv",
-    "product_category_name_translation.csv",
-)
+DATASET_FILES = {
+    "customers": "olist_customers_dataset.csv",
+    "geolocation": "olist_geolocation_dataset.csv",
+    "order_items": "olist_order_items_dataset.csv",
+    "order_payments": "olist_order_payments_dataset.csv",
+    "order_reviews": "olist_order_reviews_dataset.csv",
+    "orders": "olist_orders_dataset.csv",
+    "products": "olist_products_dataset.csv",
+    "sellers": "olist_sellers_dataset.csv",
+    "category_translation": "product_category_name_translation.csv",
+}
+
+EXPECTED_FILES = tuple(DATASET_FILES.values())
 
 
 def validate_source_directory(data_dir: str | Path) -> None:
-    """Validate that all expected Olist CSV files are available.
-
-    Args:
-        data_dir: Directory containing the downloaded Olist CSV files.
-
-    Raises:
-        FileNotFoundError: If one or more expected files are missing.
-    """
+    """Valida a presença de todos os arquivos CSV esperados."""
     path = Path(data_dir)
     missing = [name for name in EXPECTED_FILES if not (path / name).is_file()]
     if missing:
@@ -37,12 +31,11 @@ def validate_source_directory(data_dir: str | Path) -> None:
         )
 
 
-def load_olist_data(data_dir: str | Path) -> Dict[str, pd.DataFrame]:
-    """Load all Olist CSV files into a dictionary keyed by dataset name."""
+def load_olist_tables(data_dir: str | Path) -> dict[str, pd.DataFrame]:
+    """Carrega os nove arquivos Olist usando nomes canônicos de tabela."""
     validate_source_directory(data_dir)
     path = Path(data_dir)
-
     return {
-        file_name.removesuffix(".csv"): pd.read_csv(path / file_name)
-        for file_name in EXPECTED_FILES
+        table_name: pd.read_csv(path / file_name)
+        for table_name, file_name in DATASET_FILES.items()
     }
