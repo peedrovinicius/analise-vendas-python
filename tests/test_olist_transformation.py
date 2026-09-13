@@ -78,4 +78,3 @@ def test_realized_sale_is_true_only_for_delivered_orders() -> None:
 def test_loader_raises_when_expected_file_is_missing(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError):
         load_olist_tables(tmp_path)
-
