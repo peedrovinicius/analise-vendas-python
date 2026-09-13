@@ -2,9 +2,9 @@
 
 ## Status
 
-**Etapa:** perfil estrutural da fonte concluído; validação computacional local pendente.
+**Etapa:** perfil estrutural e validação computacional concluídos.
 
-Esta etapa registra somente características confirmadas na documentação pública da fonte e em referências técnicas que reproduzem os arquivos originais. Contagens de nulos, duplicidades, chaves e consistência entre tabelas serão calculadas pelo próprio projeto após a ingestão dos arquivos.
+Esta documentação registra as características da fonte e os principais pontos de atenção identificados antes e durante a construção da camada analítica. As contagens, chaves, duplicidades, nulos, integridade referencial e regras de qualidade foram reconfirmadas pela auditoria do projeto.
 
 ## Fonte
 
@@ -14,9 +14,9 @@ Fonte original: https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
 
 A Olist descreve o conjunto como dados comerciais reais de comércio eletrônico brasileiro, anonimizados, cobrindo aproximadamente 100 mil pedidos entre 2016 e 2018. O conjunto possui 9 arquivos relacionais.
 
-## Inventário estrutural conhecido
+## Inventário estrutural
 
-| Arquivo | Registros conhecidos | Função analítica inicial |
+| Arquivo | Registros | Função analítica |
 |---|---:|---|
 | `olist_orders_dataset.csv` | 99.441 | Pedidos e ciclo de entrega |
 | `olist_order_items_dataset.csv` | 112.650 | Itens vendidos; principal granularidade transacional |
@@ -28,8 +28,6 @@ A Olist descreve o conjunto como dados comerciais reais de comércio eletrônico
 | `olist_geolocation_dataset.csv` | 1.000.163 | Geolocalização por prefixo de CEP |
 | `product_category_name_translation.csv` | 71 | Tradução de categorias |
 
-As contagens acima são referências públicas do conjunto e serão reconfirmadas automaticamente durante a ingestão.
-
 ## Chaves e granularidade
 
 ### Orders
@@ -38,7 +36,7 @@ As contagens acima são referências públicas do conjunto e serão reconfirmada
 
 ### Customers
 
-`customer_id` é a chave usada para relacionar o pedido ao cadastro do cliente. `customer_unique_id` é a identificação adequada para analisar recompra do mesmo cliente em pedidos diferentes.
+`customer_id` é a chave usada para relacionar o pedido ao cadastro do cliente. `customer_unique_id` é utilizado para analisar recompra do mesmo cliente em pedidos diferentes.
 
 ### Order Items
 
@@ -50,7 +48,7 @@ A granularidade é de registros de pagamento por pedido, identificados pelo conj
 
 ### Reviews
 
-A tabela contém a avaliação associada ao pedido e pode possuir mais de um registro relacionado ao mesmo `order_id`. Não será unida diretamente à tabela de itens sem controle da granularidade.
+A tabela contém avaliações associadas aos pedidos e pode possuir mais de um registro relacionado ao mesmo `order_id`. Não é unida diretamente à fato de itens sem controle da granularidade.
 
 ### Products
 
@@ -62,36 +60,33 @@ A tabela contém a avaliação associada ao pedido e pode possuir mais de um reg
 
 ### Geolocation
 
-A geolocalização trabalha em nível de prefixo de CEP e será tratada como fonte auxiliar. Não deve ser assumida como uma dimensão 1:1 sem validação da cardinalidade.
+A geolocalização trabalha em nível de prefixo de CEP e é tratada como fonte auxiliar. Não é assumida como dimensão 1:1 sem validação de cardinalidade.
 
-## Riscos de qualidade já conhecidos
+## Principais achados de qualidade
 
-A documentação da fonte informa que um pedido pode possuir vários itens e que diferentes itens do mesmo pedido podem ser atendidos por vendedores distintos. Isso torna a granularidade um risco central para qualquer cálculo de faturamento, frete ou quantidade de pedidos.
+- As chaves principais de pedidos, clientes, produtos e vendedores não apresentaram duplicidades.
+- `order_items.(order_id, order_item_id)` e `order_payments.(order_id, payment_sequential)` também apresentaram unicidade.
+- `order_reviews.review_id` não deve ser tratado isoladamente como chave primária; a combinação `review_id + order_id` apresentou unicidade.
+- Existem campos nulos em etapas do ciclo de pedidos, atributos de produtos e conteúdo textual de avaliações.
+- A geolocalização possui 261.831 linhas exatamente duplicadas.
+- Não foram encontrados registros órfãos nos principais relacionamentos utilizados pela transformação.
+- `order_items.price`, `freight_value` e `order_payments.payment_value` não possuem valores negativos.
+- Foram identificados 2 registros com `payment_installments <= 0` e 9 pagamentos com `payment_value = 0`; ambos permanecem fora dos KPIs centrais atuais.
 
-As datas do ciclo de pedido possuem campos que podem ficar ausentes dependendo do status do pedido. Esses valores não serão preenchidos artificialmente: serão medidos e tratados segundo regras documentadas.
+## Riscos de modelagem
 
-Pagamentos e avaliações podem possuir múltiplos registros por pedido. Somar esses valores depois de um `merge` direto com itens pode produzir duplicação e resultados incorretos.
+Um pedido pode possuir vários itens e diferentes itens do mesmo pedido podem ser atendidos por vendedores distintos. Essa característica torna a definição da granularidade essencial para qualquer cálculo de receita, frete ou quantidade de pedidos.
 
-## Regras de auditoria que serão executadas
+Pagamentos e avaliações podem possuir múltiplos registros por pedido. Unir essas tabelas diretamente à fato de itens sem tratamento pode multiplicar linhas e inflar métricas.
 
-1. Contagem de linhas e colunas por arquivo.
-2. Tipagem efetiva de cada coluna.
-3. Taxa e contagem de valores ausentes.
-4. Duplicidade de chaves.
-5. Integridade referencial entre chaves relacionadas.
-6. Cardinalidade dos relacionamentos.
-7. Intervalos e consistência temporal.
-8. Valores negativos ou incompatíveis com o significado das colunas.
-9. Consistência categórica.
-10. Outliers quantitativos relevantes.
-11. Comparação das métricas antes e depois do tratamento.
+## Regra adotada
+
+Para os KPIs de receita realizada, são considerados itens associados a pedidos com `order_status = delivered`. `price` representa a receita dos itens e `freight_value` é analisado separadamente.
 
 ## Regra de ouro
 
-Nenhuma métrica do projeto será publicada antes de a sua definição, granularidade e regra de cálculo estarem documentadas e validadas sobre os dados ingeridos.
+Nenhuma métrica do projeto deve ser publicada antes de sua definição, granularidade e regra de cálculo estarem documentadas e validadas sobre os dados ingeridos.
 
-## Referências
+## Referência
 
-- Olist. *Brazilian E-Commerce Public Dataset by Olist*. Kaggle. https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
-- https://github.com/fortunewalla/olist
-- https://db.in.tum.de/teaching/ws2526/DBSandere/notebook.html?lang=en
+Olist. *Brazilian E-Commerce Public Dataset by Olist*. Kaggle. https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
