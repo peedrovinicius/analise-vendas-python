@@ -42,9 +42,7 @@ def build_item_sales_fact(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     )
 
     sales = sales.merge(
-        customers[
-            ["customer_id", "customer_unique_id", "customer_city", "customer_state"]
-        ],
+        customers[["customer_id", "customer_unique_id", "customer_city", "customer_state"]],
         on="customer_id",
         how="left",
         validate="many_to_one",
@@ -79,3 +77,8 @@ def build_item_sales_fact(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     sales["purchase_month"] = sales["order_purchase_timestamp"].dt.month.astype("Int64")
 
     return sales
+
+
+def load_and_build_item_sales_fact(raw_dir: str) -> pd.DataFrame:
+    """Carrega a fonte e constrói a visão analítica de itens."""
+    return build_item_sales_fact(load_olist_tables(raw_dir))
