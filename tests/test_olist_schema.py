@@ -1,6 +1,6 @@
 import pandas as pd
-import pytest
 import pandera.pandas as pa
+import pytest
 
 from src.validation.olist_schema import validate_core_tables
 
