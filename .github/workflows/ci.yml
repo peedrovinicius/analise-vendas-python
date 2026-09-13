@@ -29,6 +29,11 @@ jobs:
       - name: Format check
         run: ruff format --check src tests scripts
 
+      - name: Lint diagnostic
+        run: |
+          ruff check --select I --fix src tests scripts || true
+          git diff -- src tests scripts
+
       - name: Lint
         run: ruff check src tests scripts
 
