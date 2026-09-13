@@ -123,12 +123,8 @@ def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
     )
     total = result["revenue"].sum()
     result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    result["average_orders_per_customer"] = result["orders"].div(
-        result["customers"]
-    )
-    result["average_revenue_per_customer"] = result["revenue"].div(
-        result["customers"]
-    )
+    result["average_orders_per_customer"] = result["orders"].div(result["customers"])
+    result["average_revenue_per_customer"] = result["revenue"].div(result["customers"])
     return result
 
 
@@ -143,13 +139,16 @@ def repeat_customer_rate(sales: pd.DataFrame) -> float:
 def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita, frete, itens, pedidos e ticket médio por categoria traduzida."""
     realized = sales.loc[sales["is_realized_sale"]].copy()
-    result = realized.groupby(
-        "product_category_name_english", dropna=False, as_index=False
-    ).agg(
-        revenue=("price", "sum"),
-        freight=("freight_value", "sum"),
-        items=("order_item_id", "size"),
-        orders=("order_id", "nunique"),
+    result = (
+        realized.groupby(
+            "product_category_name_english", dropna=False, as_index=False
+        )
+        .agg(
+            revenue=("price", "sum"),
+            freight=("freight_value", "sum"),
+            items=("order_item_id", "size"),
+            orders=("order_id", "nunique"),
+        )
     )
     result = result.sort_values("revenue", ascending=False)
     result["average_order_value"] = result["revenue"].div(result["orders"])
