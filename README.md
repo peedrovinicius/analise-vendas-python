@@ -1,10 +1,10 @@
-# Sistema de Gestão e Análise de Vendas
+# Análise de vendas e faturamento com Python
 
 Projeto de engenharia e análise de dados construído a partir do **Brazilian E-Commerce Public Dataset by Olist**, uma base pública e anonimizada de comércio eletrônico brasileiro.
 
 ## Sobre o projeto
 
-O projeto foi reconstruído para demonstrar um fluxo completo de dados em Python, incluindo ingestão, validação de schema, transformação, cálculo de indicadores, testes automatizados, análise de qualidade e documentação dos resultados.
+O projeto demonstra um fluxo completo de dados em Python, incluindo ingestão, validação de schema, transformação, cálculo de indicadores, testes automatizados, análise de qualidade e documentação dos resultados.
 
 A versão atual utiliza exclusivamente os dados públicos da Olist. A base fictícia utilizada na versão inicial foi descontinuada.
 
@@ -55,6 +55,29 @@ A execução atual foi recalculada sobre os nove arquivos públicos da Olist e r
 
 Os indicadores adicionais de segmentação, concentração geográfica, categorias, vendedores e evolução mensal estão documentados em [docs/insights-negocio.md](./docs/insights-negocio.md).
 
+## Visualizações
+
+Os principais gráficos gerados pelo projeto estão disponíveis em:
+
+- [Evolução mensal](./assets/evolucao-mensal.svg)
+- [Receita por UF](./assets/receita-por-uf.svg)
+- [Receita por categoria](./assets/receita-por-categoria.svg)
+
+As regras de leitura dessas visualizações estão documentadas em [docs/visualizacoes.md](./docs/visualizacoes.md).
+
+## Documentação
+
+- [Metodologia](./docs/metodologia.md)
+- [Engenharia do projeto](./docs/engenharia.md)
+- [Execução local](./docs/execucao-local.md)
+- [Fonte dos dados](./docs/fonte-dados.md)
+- [Modelo de dados](./docs/modelo-dados.md)
+- [Qualidade dos dados](./docs/qualidade-dados.md)
+- [Insights de negócio](./docs/insights-negocio.md)
+- [Auditoria inicial](./docs/auditoria-inicial.md)
+- [Visualizações](./docs/visualizacoes.md)
+- [Storytelling](./docs/storytelling.md)
+
 ## Estrutura
 
 ```text
@@ -64,12 +87,15 @@ Os indicadores adicionais de segmentação, concentração geográfica, categori
 │   └── processed/
 ├── docs/
 │   ├── auditoria-inicial.md
+│   ├── engenharia.md
 │   ├── execucao-local.md
 │   ├── fonte-dados.md
 │   ├── insights-iniciais.md
 │   ├── insights-negocio.md
+│   ├── metodologia.md
 │   ├── modelo-dados.md
 │   ├── qualidade-dados.md
+│   ├── storytelling.md
 │   └── visualizacoes.md
 ├── notebooks/
 │   └── analise_olist.ipynb
@@ -84,12 +110,13 @@ Os indicadores adicionais de segmentação, concentração geográfica, categori
 │   ├── analytics/
 │   ├── ingestion/
 │   ├── transformation/
+│   ├── validation/
 │   └── pipeline.py
 ├── tests/
 │   ├── test_olist_transformation.py
 │   └── test_sales_analysis.py
-├── analise_vendas.ipynb
 ├── requirements.txt
+├── pyproject.toml
 └── README.md
 ```
 
@@ -97,23 +124,17 @@ Os indicadores adicionais de segmentação, concentração geográfica, categori
 
 A execução oficial é centralizada em `src/pipeline.py`, responsável por coordenar ingestão, validação, transformação e cálculo dos KPIs.
 
-O projeto possui CI automatizado com:
-
-- Ruff para formatação e lint;
-- mypy para verificação de tipos;
-- pytest com cobertura mínima configurada;
-- pip-audit para auditoria de dependências;
-- pre-commit para validações adicionais.
+O projeto possui CI automatizado com Ruff, mypy, pytest + coverage, pip-audit e pre-commit.
 
 ## Notebook
 
-A análise atual está em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb). O notebook antigo permanece temporariamente em `analise_vendas.ipynb` como registro da versão inicial.
+A análise atual está em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb). O notebook antigo permanece em `analise_vendas.ipynb` como registro da versão inicial.
 
 ## Status
 
 **Análise e pipeline validados.**
 
-A próxima evolução do projeto pode concentrar-se na camada de visualização e, posteriormente, na construção de uma aplicação web integrada ao pipeline de dados.
+A base técnica atual está preparada para futuras evoluções de visualização ou publicação como aplicação, mantendo as regras analíticas consolidadas na camada `src/`.
 
 ## Limitações
 
