@@ -33,6 +33,8 @@ pip-audit -r requirements.txt
 pre-commit run --all-files
 ```
 
+A ordem acima também representa a sequência usada pelo workflow de CI. Um gate com erro interrompe os seguintes, permitindo identificar o primeiro bloqueio da alteração.
+
 ## CI
 
 O workflow `.github/workflows/ci.yml` executa os gates automaticamente em pushes e pull requests. O pipeline falha no primeiro gate com erro para impedir que problemas de estilo, tipos, testes ou dependências avancem silenciosamente.
