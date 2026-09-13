@@ -1,5 +1,9 @@
 # Análise de vendas e faturamento com Python
 
+[![CI](https://github.com/peedrovinicius/analise-vendas-python/actions/workflows/ci.yml/badge.svg)](https://github.com/peedrovinicius/analise-vendas-python/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-3.x-150458?logo=pandas&logoColor=white)
+
 Projeto de engenharia e análise de dados construído a partir do **Brazilian E-Commerce Public Dataset by Olist**, uma base pública e anonimizada de comércio eletrônico brasileiro.
 
 ## Sobre o projeto
@@ -18,6 +22,35 @@ A análise responde a questões sobre:
 - categorias com maior participação na receita;
 - recorrência de clientes;
 - concentração de receita entre vendedores.
+
+## Resultados validados
+
+A execução atual foi recalculada sobre os nove arquivos públicos da Olist e reproduziu os indicadores registrados na análise inicial:
+
+- **96.478** pedidos entregues;
+- **110.197** itens;
+- **R$ 13.221.498,11** de receita dos itens;
+- **R$ 2.198.275,64** de frete;
+- **93.358** clientes únicos;
+- **R$ 137,04** de ticket médio por pedido.
+
+Os indicadores adicionais de segmentação, concentração geográfica, categorias, vendedores e evolução mensal estão documentados em [docs/insights-negocio.md](./docs/insights-negocio.md).
+
+## Visualizações
+
+### Evolução mensal
+
+![Evolução mensal](./assets/evolucao-mensal.svg)
+
+### Receita por estado
+
+![Receita por UF](./assets/receita-por-uf.svg)
+
+### Receita por categoria
+
+![Receita por categoria](./assets/receita-por-categoria.svg)
+
+As regras de leitura dessas visualizações estão documentadas em [docs/visualizacoes.md](./docs/visualizacoes.md).
 
 ## Fonte dos dados
 
@@ -41,29 +74,6 @@ Para os KPIs de receita realizada, são considerados itens pertencentes a pedido
 `price` representa a receita dos itens. `freight_value` é apresentado separadamente e não é tratado automaticamente como receita de produto.
 
 Pedidos com outros status permanecem disponíveis para análises operacionais, mas não entram no KPI de receita realizada definido nesta versão.
-
-## Resultados validados
-
-A execução atual foi recalculada sobre os nove arquivos públicos da Olist e reproduziu os indicadores registrados na análise inicial:
-
-- **96.478** pedidos entregues;
-- **110.197** itens;
-- **R$ 13.221.498,11** de receita dos itens;
-- **R$ 2.198.275,64** de frete;
-- **93.358** clientes únicos;
-- **R$ 137,04** de ticket médio por pedido.
-
-Os indicadores adicionais de segmentação, concentração geográfica, categorias, vendedores e evolução mensal estão documentados em [docs/insights-negocio.md](./docs/insights-negocio.md).
-
-## Visualizações
-
-Os principais gráficos gerados pelo projeto estão disponíveis em:
-
-- [Evolução mensal](./assets/evolucao-mensal.svg)
-- [Receita por UF](./assets/receita-por-uf.svg)
-- [Receita por categoria](./assets/receita-por-categoria.svg)
-
-As regras de leitura dessas visualizações estão documentadas em [docs/visualizacoes.md](./docs/visualizacoes.md).
 
 ## Documentação
 
