@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.ingestion.olist import EXPECTED_FILES, load_olist_data
+from src.ingestion.olist import EXPECTED_FILES, load_olist_tables
 
 DATA_DIR = Path("dados/raw")
 
@@ -53,7 +53,7 @@ def audit_dataframe(name: str, df: pd.DataFrame) -> dict[str, object]:
 
 def main() -> None:
     """Load the source files and print a reproducible audit summary."""
-    datasets = load_olist_data(DATA_DIR)
+    datasets = load_olist_tables(DATA_DIR)
 
     print("=== AUDITORIA INICIAL — OLIST ===")
     print(f"Diretório: {DATA_DIR.resolve()}")
