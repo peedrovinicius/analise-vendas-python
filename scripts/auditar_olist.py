@@ -10,6 +10,7 @@ O script não modifica os dados.
 from pathlib import Path
 
 import pandas as pd
+
 from src.ingestion.olist import EXPECTED_FILES, load_olist_data
 
 
