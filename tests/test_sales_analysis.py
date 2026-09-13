@@ -69,7 +69,8 @@ def test_customer_purchase_frequency_counts_distinct_orders() -> None:
 
 def test_category_revenue_calculates_share() -> None:
     result = category_revenue(_sales())
-    assert result.loc[0, "revenue"] == pytest.approx(200.0)
+    row = result.loc[result["product_category_name_english"] == "sports"].iloc[0]
+    assert row["revenue"] == pytest.approx(200.0)
     assert result["revenue_share"].sum() == pytest.approx(1.0)
 
 
