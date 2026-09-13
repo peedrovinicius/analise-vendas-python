@@ -25,17 +25,11 @@ def validate_source_directory(data_dir: str | Path) -> None:
     missing = [name for name in EXPECTED_FILES if not (path / name).is_file()]
     if missing:
         missing_text = "\n".join(f"- {name}" for name in missing)
-        raise FileNotFoundError(
-            "Arquivos Olist ausentes em "
-            f"{path.resolve()}:\n{missing_text}"
-        )
+        raise FileNotFoundError(f"Arquivos Olist ausentes em {path.resolve()}:\n{missing_text}")
 
 
 def load_olist_tables(data_dir: str | Path) -> dict[str, pd.DataFrame]:
     """Carrega os nove arquivos Olist usando nomes canônicos de tabela."""
     validate_source_directory(data_dir)
     path = Path(data_dir)
-    return {
-        table_name: pd.read_csv(path / file_name)
-        for table_name, file_name in DATASET_FILES.items()
-    }
+    return {table_name: pd.read_csv(path / file_name) for table_name, file_name in DATASET_FILES.items()}
