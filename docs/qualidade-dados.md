@@ -2,11 +2,9 @@
 
 ## Escopo da auditoria
 
-A primeira auditoria foi executada sobre os 9 arquivos CSV da base pública Brazilian E-Commerce Public Dataset by Olist disponibilizados no arquivo recebido para este projeto.
+A primeira auditoria foi executada sobre os 9 arquivos CSV da base pública Brazilian E-Commerce Public Dataset by Olist disponibilizados para este projeto.
 
-A auditoria mede a estrutura dos arquivos, valores ausentes, duplicidades de linhas, unicidade de chaves, intervalos de datas, valores numéricos inválidos e integridade referencial entre as tabelas.
-
-## Resultado estrutural
+## Volume das tabelas
 
 | Arquivo | Linhas | Colunas | Valores nulos | Linhas duplicadas |
 |---|---:|---:|---:|---:|
@@ -32,13 +30,13 @@ As seguintes chaves apresentaram unicidade na auditoria:
 - `order_items.(order_id, order_item_id)`: 0 duplicidades;
 - `order_payments.(order_id, payment_sequential)`: 0 duplicidades.
 
-`order_reviews.review_id` não deve ser tratado isoladamente como chave primária: foram encontrados 814 linhas adicionais com `review_id` repetido, envolvendo 789 identificadores repetidos. A combinação `review_id + order_id` não apresentou duplicidades.
+`order_reviews.review_id` não deve ser tratado isoladamente como chave primária: foram encontrados 1.603 linhas participando de repetição de `review_id`. A combinação `review_id + order_id` não apresentou duplicidades.
 
 ## Valores ausentes
 
 ### Reviews
 
-`order_reviews` possui 145.903 células nulas. Os nulos estão concentrados nos campos textuais e não devem ser preenchidos automaticamente com valores artificiais. A presença de comentário não será tratada como requisito para a existência de uma avaliação.
+`order_reviews` possui 145.903 células nulas, concentradas principalmente nos campos textuais. Esses nulos não serão preenchidos automaticamente com valores artificiais.
 
 ### Orders
 
@@ -48,21 +46,17 @@ As seguintes chaves apresentaram unicidade na auditoria:
 
 `order_delivered_customer_date`: 2.965 nulos.
 
-Esses campos representam etapas diferentes do ciclo do pedido. Nulos podem ser legítimos para pedidos que ainda não avançaram determinada etapa ou para determinados status; a regra de tratamento será definida considerando `order_status`.
+Esses campos representam etapas diferentes do ciclo do pedido. O tratamento será definido considerando `order_status` e a finalidade de cada métrica.
 
 ### Products
 
-A tabela de produtos possui 2.448 células nulas distribuídas entre atributos descritivos e dimensionais. Nenhuma imputação será feita antes de avaliar o impacto de cada coluna na análise.
+A tabela de produtos possui 2.448 células nulas distribuídas entre atributos descritivos. Nenhuma imputação será feita antes de avaliar o impacto de cada coluna.
 
 ## Datas
 
-Na tabela `orders`, `order_purchase_timestamp` não possui nulos e cobre o intervalo de **2016-09-04 21:15:19 a 2018-10-17 17:30:18**.
-
-As demais datas de ciclo de vida possuem nulos conforme registrado acima. A conversão para tipos temporais ocorrerá na etapa de transformação.
+`order_purchase_timestamp` não possui nulos e cobre o intervalo de **2016-09-04 21:15:19 a 2018-10-17 17:30:18**.
 
 ## Status dos pedidos
-
-Foram encontrados os seguintes status:
 
 - `delivered`: 96.478
 - `shipped`: 1.107
@@ -73,7 +67,11 @@ Foram encontrados os seguintes status:
 - `created`: 5
 - `approved`: 2
 
-A definição de quais status representam vendas válidas para cada KPI será feita explicitamente. Não será aplicada uma regra genérica de “somar todos os pedidos”.
+A regra inicial para **venda realizada** é `order_status = delivered`.
+
+Os demais status serão preservados para análises operacionais e não serão excluídos silenciosamente.
+
+Na tabela `order_items`, isso corresponde a 110.197 itens de pedidos entregues, com R$ 13.221.498,11 em `price`.
 
 ## Valores numéricos
 
@@ -81,34 +79,42 @@ A definição de quais status representam vendas válidas para cada KPI será fe
 
 `order_payments.payment_value` não possui valores negativos.
 
-Foram encontrados **2 registros** com `payment_installments <= 0`. Esses registros serão investigados antes de qualquer tratamento.
+Foram encontrados **2 registros** com `payment_installments <= 0`. Eles serão investigados antes de qualquer indicador baseado em parcelamento.
 
-Os atributos numéricos de produto não apresentaram valores negativos na auditoria inicial.
+Também foram encontrados 9 pagamentos com `payment_value = 0`; eles serão preservados até a definição da regra financeira correspondente.
 
 ## Duplicidades da geolocalização
 
-`olist_geolocation_dataset.csv` contém 261.831 linhas exatamente duplicadas. Isso não será tratado como erro automaticamente: a granularidade dessa tabela é diferente das demais e precisa ser definida antes de qualquer agregação ou relacionamento com CEP.
+`olist_geolocation_dataset.csv` contém 261.831 linhas exatamente duplicadas. Isso não será removido automaticamente, pois essa tabela possui granularidade própria por prefixo de CEP e poderá exigir uma regra de deduplicação específica.
 
 ## Integridade referencial
 
-Na auditoria inicial não foram encontrados registros órfãos para os seguintes relacionamentos:
+Não foram encontrados registros órfãos nos principais relacionamentos:
 
-- `order_items.order_id` → `orders.order_id`;
-- `order_items.product_id` → `products.product_id`;
-- `order_items.seller_id` → `sellers.seller_id`;
-- `orders.customer_id` → `customers.customer_id`.
+- `order_items.order_id` → `orders.order_id`: 0;
+- `order_items.product_id` → `products.product_id`: 0;
+- `order_items.seller_id` → `sellers.seller_id`: 0;
+- `orders.customer_id` → `customers.customer_id`: 0.
 
-Também não foram encontradas categorias na tabela de tradução que não existam na coluna `product_category_name` dos produtos não nulos.
+## Regras de modelagem
+
+`order_items` permanece como referência da granularidade transacional de itens.
+
+`order_payments` e `order_reviews` não serão unidos diretamente à tabela de itens para métricas agregadas sem prévia adequação de granularidade, pois ambos podem possuir múltiplos registros por pedido.
+
+Os joins dimensionais implementados no código usam validação de cardinalidade para evitar multiplicação silenciosa de linhas.
 
 ## Decisões até o momento
 
-1. Não remover nulos automaticamente.
-2. Não remover duplicidades da geolocalização sem avaliar sua granularidade.
-3. Não usar `review_id` isoladamente como chave primária.
-4. Não agregar pagamentos diretamente aos itens sem controlar a cardinalidade.
-5. Definir os KPIs a partir de regras explícitas de negócio e status dos pedidos.
-6. Investigar os dois registros com `payment_installments <= 0`.
+1. Preservar os dados brutos e não alterá-los durante a auditoria.
+2. Não preencher nulos automaticamente.
+3. Não remover duplicidades da geolocalização sem regra documentada.
+4. Não usar `review_id` isoladamente como chave primária.
+5. Considerar `delivered` como venda realizada para os KPIs de receita realizada.
+6. Preservar os demais status para análises operacionais.
+7. Investigar os 2 registros com `payment_installments <= 0`.
+8. Evitar joins que alterem a granularidade da tabela de fatos.
 
 ## Próxima etapa
 
-A próxima etapa será a criação da camada de transformação, começando pela padronização de tipos, datas e colunas e pela definição formal das regras de tratamento identificadas nesta auditoria.
+A próxima etapa será formalizar a camada `processed` e as regras de transformação, mantendo rastreabilidade entre dados brutos, dados tratados e métricas produzidas.
