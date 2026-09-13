@@ -1,58 +1,86 @@
 # Sistema de Gestão e Análise de Vendas
 
-> Projeto em reconstrução e evolução a partir de uma análise inicial em Python.
+Projeto de dados e aplicação em evolução, construído a partir do **Brazilian E-Commerce Public Dataset by Olist**, uma base pública e anonimizada de comércio eletrônico brasileiro.
 
 ## Sobre o projeto
 
-O projeto está sendo reconstruído com base no **Brazilian E-Commerce Public Dataset by Olist**, uma base pública de dados comerciais anonimizados de comércio eletrônico brasileiro.
+O projeto começou como uma análise exploratória simples em Python e está sendo reconstruído para demonstrar um fluxo mais completo de dados: ingestão, auditoria, transformação, análise, visualização, testes e, posteriormente, integração com backend, frontend e publicação.
 
-A proposta é evoluir de uma análise exploratória inicial para um projeto completo de dados e aplicação, passando por ingestão, validação, tratamento, análise, visualização e, posteriormente, integração com backend e frontend.
+A base fictícia utilizada na versão inicial foi descontinuada. Os resultados atuais são calculados a partir dos dados públicos da Olist.
+
+## Objetivos analíticos
+
+A análise atual busca responder:
+
+- quanto foi vendido em pedidos entregues;
+- como a receita evoluiu ao longo do tempo;
+- onde a demanda está concentrada no Brasil;
+- quais categorias de produtos concentram receita;
+- qual é o nível de recorrência dos clientes.
 
 ## Fonte dos dados
 
-**Brazilian E-Commerce Public Dataset by Olist**
-
+**Brazilian E-Commerce Public Dataset by Olist**  
 Fonte: https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
 
 Detalhes da fonte, arquivos, características e licença estão documentados em [docs/fonte-dados.md](./docs/fonte-dados.md).
 
-## Status atual
+## Modelo e qualidade dos dados
 
-A versão anterior do projeto utilizava uma pequena base criada diretamente no notebook para fins de estudo. Essa abordagem será substituída por dados públicos reais e anonimizados.
+A análise utiliza `order_items` como referência transacional no nível de item de pedido. Os relacionamentos com pedidos, clientes, produtos, categorias e vendedores são controlados para preservar a granularidade.
 
-A análise e os resultados da versão anterior não são considerados resultados do projeto atual.
+Pagamentos e avaliações não são unidos diretamente à tabela de itens sem tratamento específico de cardinalidade.
 
-## Direção técnica
+A auditoria de dados está documentada em [docs/qualidade-dados.md](./docs/qualidade-dados.md).
 
-A evolução planejada do projeto contempla:
+## Principais decisões de negócio
 
-- ingestão de dados públicos;
-- validação e qualidade dos dados;
-- transformação e preparação;
-- definição de métricas e regras de negócio;
-- análise exploratória e analítica;
-- visualizações orientadas a negócio;
-- testes automatizados;
-- organização do código em módulos reutilizáveis;
-- documentação técnica;
-- posteriormente, backend, frontend e publicação da aplicação.
+Para os KPIs de receita realizada, são considerados itens pertencentes a pedidos com status `delivered`.
 
-As tecnologias serão adicionadas conforme a necessidade real de cada etapa.
+`price` representa a receita dos itens. `freight_value` é apresentado separadamente e não é tratado automaticamente como receita de produto.
 
-## Estrutura inicial
+Pedidos com outros status permanecem disponíveis para análises operacionais, mas não entram no KPI de receita realizada definido nesta versão.
+
+## Estrutura atual
 
 ```text
 .
 ├── dados/
+│   ├── raw/
+│   └── processed/
 ├── docs/
-│   └── fonte-dados.md
+│   ├── auditoria-inicial.md
+│   ├── execucao-local.md
+│   ├── fonte-dados.md
+│   ├── insights-iniciais.md
+│   ├── modelo-dados.md
+│   └── qualidade-dados.md
+├── scripts/
+│   ├── auditar_olist.py
+│   └── run_pipeline.py
+├── src/
+│   ├── analytics/
+│   ├── ingestion/
+│   ├── transformation/
+│   └── pipeline.py
+├── tests/
+│   ├── test_olist_transformation.py
+│   └── test_sales_analysis.py
 ├── analise_vendas.ipynb
-├── README.md
-└── requirements.txt
+├── requirements.txt
+└── README.md
 ```
 
-A estrutura será ampliada conforme a reconstrução do projeto avançar.
+## Notebook
 
-## Projeto anterior
+O arquivo [analise_vendas.ipynb](./analise_vendas.ipynb) apresenta a análise exploratória atual com base nos dados da Olist, incluindo KPIs, evolução mensal, receita por estado, categorias de produtos e recorrência de clientes.
 
-O notebook [analise_vendas.ipynb](./analise_vendas.ipynb) permanece no repositório como registro da versão inicial do projeto. Ele será revisado e posteriormente substituído ou reorganizado conforme a nova arquitetura seja implementada.
+## Resultados atuais
+
+Os primeiros resultados oficiais da nova versão estão documentados em [docs/insights-iniciais.md](./docs/insights-iniciais.md).
+
+## Status
+
+**Em desenvolvimento.**
+
+As próximas etapas incluem aprofundamento da análise, melhoria das visualizações, expansão dos testes, organização do ambiente de execução e, posteriormente, construção da aplicação web.
