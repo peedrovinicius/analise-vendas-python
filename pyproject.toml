@@ -1,26 +1,31 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools==82.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "sistema-gestao-analise-vendas"
 version = "0.1.0"
 description = "Projeto de dados e aplicação baseado no Brazilian E-Commerce Public Dataset by Olist."
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.14"
 dependencies = [
-    "pandas>=2.2,<3.0",
-    "matplotlib>=3.8,<4.0",
-    "jupyter>=1.0,<2.0",
+    "pandas==3.0.5",
+    "matplotlib==3.11.1",
+    "jupyterlab==4.6.3",
+    "pandera==0.33.1",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0,<9.0",
-    "ruff>=0.6,<1.0",
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+    "ruff==0.16.7",
+    "mypy==2.3.1",
+    "pip-audit==2.10.1",
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--strict-config --strict-markers"
 
 [tool.ruff]
 line-length = 100
@@ -28,6 +33,26 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
 
 [tool.setuptools]
 package-dir = {"" = "."}
