@@ -6,6 +6,7 @@ from src.analytics.sales_analysis import (
     customer_purchase_frequency,
     monthly_sales,
     repeat_customer_rate,
+    sales_by_seller,
     sales_by_state,
     top_n_revenue_share,
 )
@@ -46,6 +47,15 @@ def test_sales_by_state_calculates_share() -> None:
     assert result["revenue_share"].sum() == pytest.approx(1.0)
 
 
+def test_sales_by_seller_calculates_revenue_and_share() -> None:
+    result = sales_by_seller(_sales())
+    row = result.loc[result["seller_id"] == "s1"].iloc[0]
+    assert row["revenue"] == pytest.approx(150.0)
+    assert row["items"] == 2
+    assert row["orders"] == 2
+    assert result["revenue_share"].sum() == pytest.approx(1.0)
+
+
 def test_repeat_customer_rate_uses_unique_customer_id() -> None:
     assert repeat_customer_rate(_sales()) == pytest.approx(0.5)
 
@@ -67,3 +77,33 @@ def test_top_n_revenue_share_is_bounded() -> None:
     result = sales_by_state(_sales())
     assert top_n_revenue_share(result, 1) == pytest.approx(200 / 350)
     assert top_n_revenue_share(result, 10) == pytest.approx(1.0)
+
+
+def test_top_n_revenue_share_returns_zero_for_invalid_n_or_empty_data() -> None:
+    result = sales_by_state(_sales())
+    assert top_n_revenue_share(result, 0) == 0.0
+    assert top_n_revenue_share(result, -1) == 0.0
+    assert top_n_revenue_share(result.iloc[0:0], 1) == 0.0
+
+
+def test_analytics_return_empty_results_without_realized_sales() -> None:
+    sales = _sales().assign(is_realized_sale=False)
+
+    assert monthly_sales(sales).empty
+    assert sales_by_state(sales).empty
+    assert sales_by_seller(sales).empty
+    assert customer_purchase_frequency(sales).empty
+    assert category_revenue(sales).empty
+    assert repeat_customer_rate(sales) == 0.0
+
+
+def test_sales_by_state_handles_zero_total_revenue() -> None:
+    sales = _sales().assign(price=0.0)
+    result = sales_by_state(sales)
+    assert result["revenue_share"].eq(0.0).all()
+
+
+def test_category_revenue_handles_zero_total_revenue() -> None:
+    sales = _sales().assign(price=0.0)
+    result = category_revenue(sales)
+    assert result["revenue_share"].eq(0.0).all()
