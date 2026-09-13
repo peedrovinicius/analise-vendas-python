@@ -6,38 +6,14 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.ingestion.olist import load_olist_tables
+
 REALIZED_ORDER_STATUSES = {"delivered"}
 
-EXPECTED_FILES = {
-    "customers": "olist_customers_dataset.csv",
-    "geolocation": "olist_geolocation_dataset.csv",
-    "order_items": "olist_order_items_dataset.csv",
-    "order_payments": "olist_order_payments_dataset.csv",
-    "order_reviews": "olist_order_reviews_dataset.csv",
-    "orders": "olist_orders_dataset.csv",
-    "products": "olist_products_dataset.csv",
-    "sellers": "olist_sellers_dataset.csv",
-    "category_translation": "product_category_name_translation.csv",
-}
 
-
-def load_olist_tables(raw_dir: str | Path) -> dict[str, pd.DataFrame]:
-    """Carrega os nove CSVs esperados a partir do diretório de dados brutos."""
-    raw_path = Path(raw_dir)
-    missing = [
-        filename
-        for filename in EXPECTED_FILES.values()
-        if not (raw_path / filename).is_file()
-    ]
-    if missing:
-        raise FileNotFoundError(
-            f"Arquivos Olist ausentes em {raw_path}: {', '.join(missing)}"
-        )
-
-    return {
-        table_name: pd.read_csv(raw_path / filename)
-        for table_name, filename in EXPECTED_FILES.items()
-    }
+def load_olist_tables_for_transformation(raw_dir: str | Path) -> dict[str, pd.DataFrame]:
+    """Mantém uma interface compatível para chamadas antigas do módulo."""
+    return load_olist_tables(raw_dir)
 
 
 def build_item_sales_fact(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
