@@ -6,7 +6,7 @@ O projeto utiliza o **Brazilian E-Commerce Public Dataset by Olist**, conjunto p
 
 ## Arquivos da fonte
 
-A base é composta por 9 arquivos CSV:
+A base utilizada pelo pipeline é composta por 9 arquivos CSV:
 
 - `olist_orders_dataset.csv`
 - `olist_order_items_dataset.csv`
@@ -20,7 +20,7 @@ A base é composta por 9 arquivos CSV:
 
 ## Granularidade
 
-A tabela de referência para análise transacional será `order_items`.
+A referência transacional dos indicadores de receita é `order_items`.
 
 Sua granularidade é **um item de pedido**. Um mesmo `order_id` pode aparecer em várias linhas quando um pedido contém múltiplos itens.
 
@@ -47,14 +47,20 @@ products ──── N:1 ───── product_category_name_translation
 
 - `orders.order_id` identifica um pedido.
 - `customers.customer_id` identifica o vínculo do cliente com um pedido; `customer_unique_id` permite identificar o mesmo cliente em compras diferentes.
-- `order_items` deve ser analisada no nível de item, considerando o identificador do pedido e a sequência do item.
+- `order_items` deve ser analisada no nível de item, considerando `order_id` e `order_item_id`.
 - `products.product_id` identifica o produto.
 - `sellers.seller_id` identifica o vendedor.
 - `order_payments` e `order_reviews` podem possuir múltiplos registros relacionados ao mesmo pedido e não devem ser unidos diretamente à tabela de itens sem controle da granularidade.
-- `geolocation` possui dados por prefixo de CEP e deve ser tratada como fonte auxiliar de localização.
+- `geolocation` possui dados por prefixo de CEP e é tratada como fonte auxiliar de localização.
 
-## Regra de modelagem inicial
+## Modelagem aplicada
 
-A modelagem analítica será definida após a auditoria dos arquivos reais. Não será feito um `merge` indiscriminado de todas as tabelas.
+A camada de transformação utiliza `order_items` como fato transacional e incorpora informações dimensionais de pedidos, clientes, produtos, categorias e vendedores com controle de cardinalidade.
 
-A principal preocupação será preservar a granularidade e evitar duplicação de valores em métricas como faturamento, frete, pagamentos e quantidade de pedidos.
+As métricas de receita realizada consideram itens associados a pedidos com `order_status = delivered`.
+
+Pagamentos e avaliações permanecem fora da fato principal para os indicadores que poderiam sofrer duplicação por múltiplos registros por pedido.
+
+## Objetivo da modelagem
+
+A regra central é preservar a granularidade de cada indicador e impedir que relacionamentos um-para-muitos multipliquem valores de receita, frete, itens ou pedidos.
