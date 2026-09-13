@@ -108,9 +108,7 @@ def customer_metrics(sales: pd.DataFrame) -> pd.DataFrame:
     result = customers.copy()
     result["average_order_value"] = result["revenue"].div(result["orders"])
     result["items_per_order"] = result["items"].div(result["orders"])
-    result["customer_segment"] = result["orders"].gt(1).map(
-        {True: "repeat", False: "one_time"}
-    )
+    result["customer_segment"] = result["orders"].gt(1).map({True: "repeat", False: "one_time"})
     return result
 
 
@@ -131,9 +129,7 @@ def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
             ]
         )
 
-    customers["customer_segment"] = (
-        customers["orders"].gt(1).map({True: "repeat", False: "one_time"})
-    )
+    customers["customer_segment"] = customers["orders"].gt(1).map({True: "repeat", False: "one_time"})
     result = (
         customers.groupby("customer_segment", as_index=False)
         .agg(
