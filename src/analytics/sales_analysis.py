@@ -47,8 +47,8 @@ def sales_by_state(sales: pd.DataFrame) -> pd.DataFrame:
     result["average_order_value"] = result["revenue"].div(result["orders"])
     total = result["revenue"].sum()
     result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    result["freight_to_revenue"] = result["freight"].div(result["revenue"]).where(
-        result["revenue"] != 0, 0.0
+    result["freight_to_revenue"] = (
+        result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
     )
     return result
 
@@ -95,9 +95,7 @@ def repeat_customer_rate(sales: pd.DataFrame) -> float:
 def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita, frete, itens, pedidos e ticket médio por categoria traduzida."""
     realized = sales.loc[sales["is_realized_sale"]].copy()
-    result = realized.groupby(
-        "product_category_name_english", dropna=False, as_index=False
-    ).agg(
+    result = realized.groupby("product_category_name_english", dropna=False, as_index=False).agg(
         revenue=("price", "sum"),
         freight=("freight_value", "sum"),
         items=("order_item_id", "size"),
@@ -107,13 +105,15 @@ def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     result["average_order_value"] = result["revenue"].div(result["orders"])
     total = result["revenue"].sum()
     result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    result["freight_to_revenue"] = result["freight"].div(result["revenue"]).where(
-        result["revenue"] != 0, 0.0
+    result["freight_to_revenue"] = (
+        result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
     )
     return result
 
 
-def top_n_revenue_share(grouped: pd.DataFrame, n: int, revenue_column: str = "revenue") -> float:
+def top_n_revenue_share(
+    grouped: pd.DataFrame, n: int, revenue_column: str = "revenue"
+) -> float:
     """Retorna a participação da receita concentrada nos n primeiros grupos."""
     if n <= 0 or grouped.empty:
         return 0.0
