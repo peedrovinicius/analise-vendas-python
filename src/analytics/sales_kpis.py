@@ -38,8 +38,8 @@ def calculate_sales_kpis(sales: pd.DataFrame) -> dict[str, float | int]:
 def revenue_by_category(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita e itens por categoria para pedidos realizados."""
     realized = sales.loc[sales["is_realized_sale"]].copy()
-    return realized.groupby(
-        "product_category_name_english", dropna=False, as_index=False
-    ).agg(
-        revenue=("price", "sum"), items=("order_item_id", "size")
-    ).sort_values("revenue", ascending=False)
+    return (
+        realized.groupby("product_category_name_english", dropna=False, as_index=False)
+        .agg(revenue=("price", "sum"), items=("order_item_id", "size"))
+        .sort_values("revenue", ascending=False)
+    )
