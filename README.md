@@ -1,55 +1,58 @@
-# Análise de Vendas com Python
+# Sistema de Gestão e Análise de Vendas
+
+> Projeto em reconstrução e evolução a partir de uma análise inicial em Python.
 
 ## Sobre o projeto
 
-Este projeto apresenta uma análise exploratória de uma base de dados de vendas, com foco em faturamento, volume de vendas, produtos, regiões e vendedores.
+O projeto está sendo reconstruído com base no **Brazilian E-Commerce Public Dataset by Olist**, uma base pública de dados comerciais anonimizados de comércio eletrônico brasileiro.
 
-O objetivo é transformar os dados em informações que possam auxiliar na interpretação dos resultados e na tomada de decisões.
+A proposta é evoluir de uma análise exploratória inicial para um projeto completo de dados e aplicação, passando por ingestão, validação, tratamento, análise, visualização e, posteriormente, integração com backend e frontend.
 
-## Tecnologias utilizadas
+## Fonte dos dados
 
-- Python
-- Pandas
-- Matplotlib
-- Google Colab
+**Brazilian E-Commerce Public Dataset by Olist**
 
-## Análises realizadas
+Fonte: https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
 
-Durante o projeto foram realizadas as seguintes análises:
+Detalhes da fonte, arquivos, características e licença estão documentados em [docs/fonte-dados.md](./docs/fonte-dados.md).
 
-- Cálculo do faturamento por venda
-- Faturamento total
-- Faturamento por produto
-- Faturamento por região
-- Faturamento por vendedor
-- Participação dos produtos no faturamento
-- Quantidade de produtos vendidos
-- Valor médio por unidade
-- Comparação do desempenho dos vendedores
-- Visualização dos resultados por meio de gráficos
+## Status atual
 
-## Principais resultados
+A versão anterior do projeto utilizava uma pequena base criada diretamente no notebook para fins de estudo. Essa abordagem será substituída por dados públicos reais e anonimizados.
 
-O faturamento total analisado foi de R$ 112.950,00.
+A análise e os resultados da versão anterior não são considerados resultados do projeto atual.
 
-O Notebook apresentou o maior faturamento, representando 55,78% da receita total.
+## Direção técnica
 
-O Monitor ficou em segundo lugar, representando 31,87% do faturamento.
+A evolução planejada do projeto contempla:
 
-Juntos, Notebook e Monitor representaram 87,65% da receita analisada.
+- ingestão de dados públicos;
+- validação e qualidade dos dados;
+- transformação e preparação;
+- definição de métricas e regras de negócio;
+- análise exploratória e analítica;
+- visualizações orientadas a negócio;
+- testes automatizados;
+- organização do código em módulos reutilizáveis;
+- documentação técnica;
+- posteriormente, backend, frontend e publicação da aplicação.
 
-Em relação ao volume de vendas, o Mouse apresentou a maior quantidade de unidades vendidas, com 75 unidades.
+As tecnologias serão adicionadas conforme a necessidade real de cada etapa.
 
-O Notebook apresentou o maior valor médio por unidade, de R$ 3.500,00.
+## Estrutura inicial
 
-## Conclusão
+```text
+.
+├── dados/
+├── docs/
+│   └── fonte-dados.md
+├── analise_vendas.ipynb
+├── README.md
+└── requirements.txt
+```
 
-A análise demonstra que volume de vendas e faturamento são métricas diferentes e devem ser avaliadas conjuntamente.
+A estrutura será ampliada conforme a reconstrução do projeto avançar.
 
-Produtos com maior valor unitário podem representar uma parcela significativa da receita mesmo apresentando um volume menor de vendas.
+## Projeto anterior
 
-## Arquivo do projeto
-
-O notebook com todo o código e as análises está disponível neste repositório:
-
-[analise_vendas.ipynb](./analise_vendas.ipynb)
+O notebook [analise_vendas.ipynb](./analise_vendas.ipynb) permanece no repositório como registro da versão inicial do projeto. Ele será revisado e posteriormente substituído ou reorganizado conforme a nova arquitetura seja implementada.
