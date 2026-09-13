@@ -28,7 +28,9 @@ def monthly_sales(sales: pd.DataFrame) -> pd.DataFrame:
     result["average_order_value"] = result["revenue"].div(result["orders"])
     result["revenue_mom_growth"] = result["revenue"].pct_change()
     total = result["revenue"].sum()
-    result["cumulative_revenue_share"] = result["revenue"].cumsum().div(total) if total else 0.0
+    result["cumulative_revenue_share"] = (
+        result["revenue"].cumsum().div(total) if total else 0.0
+    )
     result["freight_to_revenue"] = (
         result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
     )
@@ -106,10 +108,17 @@ def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
             ]
         )
 
-    customers["customer_segment"] = customers["orders"].gt(1).map({True: "repeat", False: "one_time"})
+    customers["customer_segment"] = (
+        customers["orders"].gt(1).map({True: "repeat", False: "one_time"})
+    )
     result = (
         customers.groupby("customer_segment", as_index=False)
-        .agg(customers=("customer_unique_id", "nunique"), orders=("orders", "sum"), items=("items", "sum"), revenue=("revenue", "sum"))
+        .agg(
+            customers=("customer_unique_id", "nunique"),
+            orders=("orders", "sum"),
+            items=("items", "sum"),
+            revenue=("revenue", "sum"),
+        )
         .sort_values("revenue", ascending=False)
     )
     total = result["revenue"].sum()
@@ -130,9 +139,13 @@ def repeat_customer_rate(sales: pd.DataFrame) -> float:
 def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita, frete, itens, pedidos e ticket médio por categoria traduzida."""
     realized = sales.loc[sales["is_realized_sale"]].copy()
-    result = (
-        realized.groupby("product_category_name_english", dropna=False, as_index=False)
-        .agg(revenue=("price", "sum"), freight=("freight_value", "sum"), items=("order_item_id", "size"), orders=("order_id", "nunique"))
+    result = realized.groupby(
+        "product_category_name_english", dropna=False, as_index=False
+    ).agg(
+        revenue=("price", "sum"),
+        freight=("freight_value", "sum"),
+        items=("order_item_id", "size"),
+        orders=("order_id", "nunique"),
     )
     result = result.sort_values("revenue", ascending=False)
     result["average_order_value"] = result["revenue"].div(result["orders"])
@@ -144,7 +157,9 @@ def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
-def top_n_revenue_share(grouped: pd.DataFrame, n: int, revenue_column: str = "revenue") -> float:
+def top_n_revenue_share(
+    grouped: pd.DataFrame, n: int, revenue_column: str = "revenue"
+) -> float:
     """Retorna a participação da receita concentrada nos n primeiros grupos."""
     if n <= 0 or grouped.empty:
         return 0.0
