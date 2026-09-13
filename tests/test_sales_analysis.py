@@ -41,11 +41,13 @@ def test_monthly_sales_calculates_aov_and_growth() -> None:
     assert result.loc[1, "revenue_mom_growth"] == pytest.approx(1.5)
 
 
-def test_sales_by_state_calculates_share_and_aov() -> None:
+def test_sales_by_state_calculates_share_aov_and_freight_ratio() -> None:
     result = sales_by_state(_sales())
     row = result.loc[result["customer_state"] == "SP"].iloc[0]
     assert row["revenue"] == pytest.approx(200.0)
+    assert row["freight"] == pytest.approx(20.0)
     assert row["average_order_value"] == pytest.approx(200.0)
+    assert row["freight_to_revenue"] == pytest.approx(0.1)
     assert result["revenue_share"].sum() == pytest.approx(1.0)
 
 
@@ -69,11 +71,13 @@ def test_customer_purchase_frequency_counts_distinct_orders() -> None:
     assert row["revenue"] == pytest.approx(150.0)
 
 
-def test_category_revenue_calculates_share_and_aov() -> None:
+def test_category_revenue_calculates_share_aov_and_freight_ratio() -> None:
     result = category_revenue(_sales())
     row = result.loc[result["product_category_name_english"] == "sports"].iloc[0]
     assert row["revenue"] == pytest.approx(200.0)
+    assert row["freight"] == pytest.approx(20.0)
     assert row["average_order_value"] == pytest.approx(200.0)
+    assert row["freight_to_revenue"] == pytest.approx(0.1)
     assert result["revenue_share"].sum() == pytest.approx(1.0)
 
 
@@ -105,9 +109,11 @@ def test_sales_by_state_handles_zero_total_revenue() -> None:
     sales = _sales().assign(price=0.0)
     result = sales_by_state(sales)
     assert result["revenue_share"].eq(0.0).all()
+    assert result["freight_to_revenue"].eq(0.0).all()
 
 
 def test_category_revenue_handles_zero_total_revenue() -> None:
     sales = _sales().assign(price=0.0)
     result = category_revenue(sales)
     assert result["revenue_share"].eq(0.0).all()
+    assert result["freight_to_revenue"].eq(0.0).all()
