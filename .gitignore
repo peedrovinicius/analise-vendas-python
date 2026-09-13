@@ -1,0 +1,29 @@
+# Ambientes Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Dados locais
+# A fonte pública é documentada no projeto; os arquivos brutos não são versionados.
+dados/raw/*
+dados/processed/*
+!dados/raw/.gitkeep
+!dados/processed/.gitkeep
+
+# Arquivos de sistema e IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Credenciais e variáveis de ambiente
+.env
+.env.*
+!.env.example
