@@ -5,7 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from src.analytics.sales_kpis import calculate_sales_kpis
-from src.transformation.olist import build_item_sales_fact, load_olist_tables
+from src.ingestion.olist import load_olist_tables
+from src.transformation.olist import build_item_sales_fact
 from src.validation.olist_schema import validate_core_tables
 
 
