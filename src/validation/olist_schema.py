@@ -5,7 +5,6 @@ from __future__ import annotations
 import pandera.pandas as pa
 import pandas as pd
 
-
 ORDERS_SCHEMA = pa.DataFrameSchema(
     {
         "order_id": pa.Column(str, nullable=False, unique=True),
