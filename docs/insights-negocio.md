@@ -36,11 +36,11 @@ A receita observada está fortemente concentrada no Sudeste, especialmente em S�
 
 As cinco maiores categorias por receita são:
 
-1. `health_beauty` — **R$ 1.233.131,72** (**9,33%** da receita).
-2. `watches_gifts` — **R$ 1.166.176,98** (**8,82%**).
-3. `bed_bath_table` — **R$ 1.023.434,76** (**7,74%**).
-4. `sports_leisure` — **R$ 954.852,55** (**7,22%**).
-5. `computers_accessories` — **R$ 888.724,61** (**6,72%**).
+1. **Saúde e beleza** — **R$ 1.233.131,72** (**9,33%** da receita).
+2. **Relógios e presentes** — **R$ 1.166.176,98** (**8,82%**).
+3. **Cama, mesa e banho** — **R$ 1.023.434,76** (**7,74%**).
+4. **Esporte e lazer** — **R$ 954.852,55** (**7,22%**).
+5. **Computadores e acessórios** — **R$ 888.724,61** (**6,72%**).
 
 Juntas, essas cinco categorias representam **39,83% da receita**.
 
@@ -48,7 +48,7 @@ A liderança em receita não significa liderança em margem ou lucro, pois o dat
 
 ### Interpretação
 
-A receita está distribuída entre várias categorias. `health_beauty` é a maior categoria em receita, mas responde por menos de 10% da receita total, enquanto as cinco primeiras concentram pouco menos de 40%.
+A receita está distribuída entre várias categorias. Saúde e beleza é a maior categoria em receita, mas responde por menos de 10% da receita total, enquanto as cinco primeiras concentram 39,83%.
 
 ## 4. Evolução temporal
 
@@ -80,7 +80,7 @@ A nova execução reproduziu os principais números já documentados em `docs/in
 - **93.358** clientes únicos;
 - **R$ 137,04** de ticket médio de pedido.
 
-Também foram confirmados os valores anuais de receita, os cinco primeiros rankings de categorias, os principais estados, a concentração dos 10 maiores vendedores e a quantidade de clientes recorrentes registrada anteriormente. fileciteturn33file0
+Também foram confirmados os valores anuais de receita, os cinco primeiros rankings de categorias, os principais estados, a concentração dos 10 maiores vendedores e a quantidade de clientes recorrentes registrada anteriormente.
 
 ## Limitações
 
