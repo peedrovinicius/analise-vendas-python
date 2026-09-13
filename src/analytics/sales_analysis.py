@@ -8,9 +8,11 @@ import pandas as pd
 def monthly_sales(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega vendas realizadas por mês de compra."""
     realized = sales.loc[sales["is_realized_sale"]].copy()
-    realized["purchase_month_start"] = pd.to_datetime(
-        realized["order_purchase_timestamp"], errors="coerce"
-    ).dt.to_period("M").dt.to_timestamp()
+    realized["purchase_month_start"] = (
+        pd.to_datetime(realized["order_purchase_timestamp"], errors="coerce")
+        .dt.to_period("M")
+        .dt.to_timestamp()
+    )
 
     result = (
         realized.groupby("purchase_month_start", as_index=False)
@@ -88,17 +90,14 @@ def repeat_customer_rate(sales: pd.DataFrame) -> float:
 def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita, itens e pedidos por categoria traduzida."""
     realized = sales.loc[sales["is_realized_sale"]].copy()
-    result = (
-        realized.groupby(
-            "product_category_name_english", dropna=False, as_index=False
-        )
-        .agg(
-            revenue=("price", "sum"),
-            items=("order_item_id", "size"),
-            orders=("order_id", "nunique"),
-        )
-        .sort_values("revenue", ascending=False)
+    result = realized.groupby(
+        "product_category_name_english", dropna=False, as_index=False
+    ).agg(
+        revenue=("price", "sum"),
+        items=("order_item_id", "size"),
+        orders=("order_id", "nunique"),
     )
+    result = result.sort_values("revenue", ascending=False)
     total = result["revenue"].sum()
     result["revenue_share"] = result["revenue"].div(total) if total else 0.0
     return result
@@ -113,6 +112,4 @@ def top_n_revenue_share(
     total = grouped[revenue_column].sum()
     if total == 0:
         return 0.0
-    return float(
-        grouped.nlargest(n, revenue_column)[revenue_column].sum() / total
-    )
+    return float(grouped.nlargest(n, revenue_column)[revenue_column].sum() / total)
