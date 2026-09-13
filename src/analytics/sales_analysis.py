@@ -5,9 +5,29 @@ from __future__ import annotations
 import pandas as pd
 
 
+def _realized_sales(sales: pd.DataFrame) -> pd.DataFrame:
+    """Retorna apenas os itens classificados como vendas realizadas."""
+    return sales.loc[sales["is_realized_sale"]].copy()
+
+
+def _add_revenue_share(result: pd.DataFrame) -> pd.DataFrame:
+    """Adiciona a participação da receita no total do resultado."""
+    total = result["revenue"].sum()
+    result["revenue_share"] = result["revenue"].div(total) if total else 0.0
+    return result
+
+
+def _add_freight_ratio(result: pd.DataFrame) -> pd.DataFrame:
+    """Adiciona a relação entre frete e receita, protegendo divisão por zero."""
+    result["freight_to_revenue"] = (
+        result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
+    )
+    return result
+
+
 def monthly_sales(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega vendas realizadas por mês de compra."""
-    realized = sales.loc[sales["is_realized_sale"]].copy()
+    realized = _realized_sales(sales)
     realized["purchase_month_start"] = (
         pd.to_datetime(realized["order_purchase_timestamp"], errors="coerce")
         .dt.to_period("M")
@@ -29,15 +49,12 @@ def monthly_sales(sales: pd.DataFrame) -> pd.DataFrame:
     result["revenue_mom_growth"] = result["revenue"].pct_change()
     total = result["revenue"].sum()
     result["cumulative_revenue_share"] = result["revenue"].cumsum().div(total) if total else 0.0
-    result["freight_to_revenue"] = (
-        result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
-    )
-    return result
+    return _add_freight_ratio(result)
 
 
 def sales_by_state(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita, frete, volume e ticket médio pelo estado do cliente."""
-    realized = sales.loc[sales["is_realized_sale"]].copy()
+    realized = _realized_sales(sales)
     result = (
         realized.groupby("customer_state", as_index=False)
         .agg(
@@ -50,17 +67,13 @@ def sales_by_state(sales: pd.DataFrame) -> pd.DataFrame:
         .sort_values("revenue", ascending=False)
     )
     result["average_order_value"] = result["revenue"].div(result["orders"])
-    total = result["revenue"].sum()
-    result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    result["freight_to_revenue"] = (
-        result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
-    )
-    return result
+    result = _add_revenue_share(result)
+    return _add_freight_ratio(result)
 
 
 def sales_by_seller(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita e volume por vendedor."""
-    realized = sales.loc[sales["is_realized_sale"]].copy()
+    realized = _realized_sales(sales)
     result = (
         realized.groupby("seller_id", as_index=False)
         .agg(
@@ -70,15 +83,13 @@ def sales_by_seller(sales: pd.DataFrame) -> pd.DataFrame:
         )
         .sort_values("revenue", ascending=False)
     )
-    total = result["revenue"].sum()
-    result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    return result
+    return _add_revenue_share(result)
 
 
-def customer_purchase_frequency(sales: pd.DataFrame) -> pd.DataFrame:
-    """Resume receita, pedidos e itens por cliente único."""
-    realized = sales.loc[sales["is_realized_sale"]].copy()
-    return (
+def customer_metrics(sales: pd.DataFrame) -> pd.DataFrame:
+    """Calcula métricas por cliente para segmentação e análise de valor."""
+    realized = _realized_sales(sales)
+    result = (
         realized.groupby("customer_unique_id", as_index=False)
         .agg(
             revenue=("price", "sum"),
@@ -87,11 +98,22 @@ def customer_purchase_frequency(sales: pd.DataFrame) -> pd.DataFrame:
         )
         .sort_values("revenue", ascending=False)
     )
+    result["average_order_value"] = result["revenue"].div(result["orders"])
+    result["items_per_order"] = result["items"].div(result["orders"])
+    result["customer_segment"] = result["orders"].gt(1).map(
+        {True: "repeat", False: "one_time"}
+    )
+    return result
+
+
+def customer_purchase_frequency(sales: pd.DataFrame) -> pd.DataFrame:
+    """Resume receita, pedidos e itens por cliente único."""
+    return customer_metrics(sales)[["customer_unique_id", "revenue", "orders", "items"]]
 
 
 def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
     """Resume clientes em segmentos de compra única e recorrente."""
-    customers = customer_purchase_frequency(sales)
+    customers = customer_metrics(sales)
     if customers.empty:
         return pd.DataFrame(
             columns=[
@@ -106,9 +128,6 @@ def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
             ]
         )
 
-    customers["customer_segment"] = (
-        customers["orders"].gt(1).map({True: "repeat", False: "one_time"})
-    )
     result = (
         customers.groupby("customer_segment", as_index=False)
         .agg(
@@ -119,8 +138,7 @@ def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
         )
         .sort_values("revenue", ascending=False)
     )
-    total = result["revenue"].sum()
-    result["revenue_share"] = result["revenue"].div(total) if total else 0.0
+    result = _add_revenue_share(result)
     result["average_orders_per_customer"] = result["orders"].div(result["customers"])
     result["average_revenue_per_customer"] = result["revenue"].div(result["customers"])
     return result
@@ -128,15 +146,15 @@ def customer_segment_summary(sales: pd.DataFrame) -> pd.DataFrame:
 
 def repeat_customer_rate(sales: pd.DataFrame) -> float:
     """Calcula a proporção de clientes únicos com mais de um pedido."""
-    customers = customer_purchase_frequency(sales)
+    customers = customer_metrics(sales)
     if customers.empty:
         return 0.0
-    return float((customers["orders"] > 1).mean())
+    return float(customers["customer_segment"].eq("repeat").mean())
 
 
 def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     """Agrega receita, frete, itens, pedidos e ticket médio por categoria traduzida."""
-    realized = sales.loc[sales["is_realized_sale"]].copy()
+    realized = _realized_sales(sales)
     result = realized.groupby("product_category_name_english", dropna=False, as_index=False).agg(
         revenue=("price", "sum"),
         freight=("freight_value", "sum"),
@@ -145,12 +163,8 @@ def category_revenue(sales: pd.DataFrame) -> pd.DataFrame:
     )
     result = result.sort_values("revenue", ascending=False)
     result["average_order_value"] = result["revenue"].div(result["orders"])
-    total = result["revenue"].sum()
-    result["revenue_share"] = result["revenue"].div(total) if total else 0.0
-    result["freight_to_revenue"] = (
-        result["freight"].div(result["revenue"]).where(result["revenue"] != 0, 0.0)
-    )
-    return result
+    result = _add_revenue_share(result)
+    return _add_freight_ratio(result)
 
 
 def top_n_revenue_share(grouped: pd.DataFrame, n: int, revenue_column: str = "revenue") -> float:
