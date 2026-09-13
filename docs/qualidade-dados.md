@@ -2,7 +2,7 @@
 
 ## Escopo da auditoria
 
-A primeira auditoria foi executada sobre os 9 arquivos CSV da base pública Brazilian E-Commerce Public Dataset by Olist disponibilizados para este projeto.
+A auditoria foi executada sobre os 9 arquivos CSV da base pública Brazilian E-Commerce Public Dataset by Olist utilizados pelo projeto.
 
 ## Volume das tabelas
 
@@ -36,7 +36,7 @@ As seguintes chaves apresentaram unicidade na auditoria:
 
 ### Reviews
 
-`order_reviews` possui 145.903 células nulas, concentradas principalmente nos campos textuais. Esses nulos não serão preenchidos automaticamente com valores artificiais.
+`order_reviews` possui 145.903 células nulas, concentradas principalmente nos campos textuais. Esses nulos não são preenchidos automaticamente.
 
 ### Orders
 
@@ -46,11 +46,11 @@ As seguintes chaves apresentaram unicidade na auditoria:
 
 `order_delivered_customer_date`: 2.965 nulos.
 
-Esses campos representam etapas diferentes do ciclo do pedido. O tratamento será definido considerando `order_status` e a finalidade de cada métrica.
+Esses campos representam etapas diferentes do ciclo do pedido e não são preenchidos artificialmente.
 
 ### Products
 
-A tabela de produtos possui 2.448 células nulas distribuídas entre atributos descritivos. Nenhuma imputação será feita antes de avaliar o impacto de cada coluna.
+A tabela de produtos possui 2.448 células nulas distribuídas entre atributos descritivos. Nenhuma imputação é aplicada na camada analítica atual.
 
 ## Datas
 
@@ -67,11 +67,11 @@ A tabela de produtos possui 2.448 células nulas distribuídas entre atributos d
 - `created`: 5
 - `approved`: 2
 
-A regra inicial para **venda realizada** é `order_status = delivered`.
+A regra de **venda realizada** é `order_status = delivered`.
 
-Os demais status serão preservados para análises operacionais e não serão excluídos silenciosamente.
+Os demais status permanecem disponíveis na fonte para análises operacionais e não são excluídos silenciosamente.
 
-Na tabela `order_items`, isso corresponde a 110.197 itens de pedidos entregues, com R$ 13.221.498,11 em `price`.
+Na tabela `order_items`, os pedidos entregues correspondem a **110.197 itens** e **R$ 13.221.498,11** em `price`.
 
 ## Valores numéricos
 
@@ -79,13 +79,11 @@ Na tabela `order_items`, isso corresponde a 110.197 itens de pedidos entregues, 
 
 `order_payments.payment_value` não possui valores negativos.
 
-Foram encontrados **2 registros** com `payment_installments <= 0`. Eles serão investigados antes de qualquer indicador baseado em parcelamento.
-
-Também foram encontrados 9 pagamentos com `payment_value = 0`; eles serão preservados até a definição da regra financeira correspondente.
+Foram encontrados **2 registros** com `payment_installments <= 0` e 9 pagamentos com `payment_value = 0`. Esses registros permanecem preservados porque não participam dos KPIs centrais de receita realizada.
 
 ## Duplicidades da geolocalização
 
-`olist_geolocation_dataset.csv` contém 261.831 linhas exatamente duplicadas. Isso não será removido automaticamente, pois essa tabela possui granularidade própria por prefixo de CEP e poderá exigir uma regra de deduplicação específica.
+`olist_geolocation_dataset.csv` contém 261.831 linhas exatamente duplicadas. Elas não são removidas automaticamente, pois a tabela possui granularidade própria por prefixo de CEP e não participa dos KPIs centrais atuais.
 
 ## Integridade referencial
 
@@ -100,11 +98,15 @@ Não foram encontrados registros órfãos nos principais relacionamentos:
 
 `order_items` permanece como referência da granularidade transacional de itens.
 
-`order_payments` e `order_reviews` não serão unidos diretamente à tabela de itens para métricas agregadas sem prévia adequação de granularidade, pois ambos podem possuir múltiplos registros por pedido.
+`order_payments` e `order_reviews` não são unidos diretamente à tabela de itens para métricas agregadas sem prévia adequação de granularidade, pois podem possuir múltiplos registros por pedido.
 
 Os joins dimensionais implementados no código usam validação de cardinalidade para evitar multiplicação silenciosa de linhas.
 
-## Decisões até o momento
+## Estado atual
+
+A auditoria, as regras de qualidade e a transformação principal já estão implementadas e documentadas. A camada `processed` permanece reservada para uma futura materialização de dados tratados; os KPIs atuais são calculados diretamente a partir da fato analítica construída pela camada de transformação.
+
+## Decisões de qualidade
 
 1. Preservar os dados brutos e não alterá-los durante a auditoria.
 2. Não preencher nulos automaticamente.
@@ -112,9 +114,5 @@ Os joins dimensionais implementados no código usam validação de cardinalidade
 4. Não usar `review_id` isoladamente como chave primária.
 5. Considerar `delivered` como venda realizada para os KPIs de receita realizada.
 6. Preservar os demais status para análises operacionais.
-7. Investigar os 2 registros com `payment_installments <= 0`.
+7. Manter os registros atípicos de pagamento fora dos KPIs centrais até que exista regra financeira específica.
 8. Evitar joins que alterem a granularidade da tabela de fatos.
-
-## Próxima etapa
-
-A próxima etapa será formalizar a camada `processed` e as regras de transformação, mantendo rastreabilidade entre dados brutos, dados tratados e métricas produzidas.
