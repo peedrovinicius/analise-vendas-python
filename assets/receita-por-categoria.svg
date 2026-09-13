@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="440" viewBox="0 0 900 440">
+<rect width="900" height="440" fill="white"/>
+<text x="240" y="30" font-family="Arial" font-size="22" font-weight="bold">Top 10 categorias por receita — pedidos entregues</text>
+<text x="230" y="90" text-anchor="end" font-family="Arial" font-size="13">toys</text><rect x="240" y="75" width="194.9" height="22" fill="#4472C4"/><text x="442.9" y="91" font-family="Arial" font-size="12">R$ 471.286</text>
+<text x="230" y="124" text-anchor="end" font-family="Arial" font-size="13">auto</text><rect x="240" y="109" width="239.4" height="22" fill="#4472C4"/><text x="487.4" y="125" font-family="Arial" font-size="12">R$ 578.967</text>
+<text x="230" y="158" text-anchor="end" font-family="Arial" font-size="13">cool_stuff</text><rect x="240" y="143" width="252.4" height="22" fill="#4472C4"/><text x="500.4" y="159" font-family="Arial" font-size="12">R$ 610.204</text>
+<text x="230" y="192" text-anchor="end" font-family="Arial" font-size="13">housewares</text><rect x="240" y="177" width="254.6" height="22" fill="#4472C4"/><text x="502.6" y="193" font-family="Arial" font-size="12">R$ 615.629</text>
+<text x="230" y="226" text-anchor="end" font-family="Arial" font-size="13">furniture_decor</text><rect x="240" y="211" width="294.4" height="22" fill="#4472C4"/><text x="542.4" y="227" font-family="Arial" font-size="12">R$ 711.928</text>
+<text x="230" y="260" text-anchor="end" font-family="Arial" font-size="13">computers_accessories</text><rect x="240" y="245" width="367.6" height="22" fill="#4472C4"/><text x="615.6" y="261" font-family="Arial" font-size="12">R$ 888.725</text>
+<text x="230" y="294" text-anchor="end" font-family="Arial" font-size="13">sports_leisure</text><rect x="240" y="279" width="394.9" height="22" fill="#4472C4"/><text x="642.9" y="295" font-family="Arial" font-size="12">R$ 954.853</text>
+<text x="230" y="328" text-anchor="end" font-family="Arial" font-size="13">bed_bath_table</text><rect x="240" y="313" width="423.3" height="22" fill="#4472C4"/><text x="671.3" y="329" font-family="Arial" font-size="12">R$ 1.023.435</text>
+<text x="230" y="362" text-anchor="end" font-family="Arial" font-size="13">watches_gifts</text><rect x="240" y="347" width="482.3" height="22" fill="#4472C4"/><text x="730.3" y="363" font-family="Arial" font-size="12">R$ 1.166.177</text>
+<text x="230" y="396" text-anchor="end" font-family="Arial" font-size="13">health_beauty</text><rect x="240" y="381" width="510" height="22" fill="#4472C4"/><text x="758" y="397" font-family="Arial" font-size="12">R$ 1.233.132</text>
+</svg>
