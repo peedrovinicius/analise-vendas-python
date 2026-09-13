@@ -136,6 +136,31 @@ A execução oficial é centralizada em `src/pipeline.py`, responsável por coor
 
 O projeto possui CI automatizado com Ruff, mypy, pytest + coverage, pip-audit e pre-commit.
 
+## Execução local
+
+Para reproduzir a análise localmente:
+
+```bash
+git clone https://github.com/peedrovinicius/analise-vendas-python.git
+cd analise-vendas-python
+python -m venv .venv
+```
+
+Ative o ambiente virtual conforme o seu sistema e instale as dependências:
+
+```bash
+python -m pip install -r requirements.txt
+python -m pip install -e .
+```
+
+Coloque os nove arquivos CSV da Olist em `dados/raw/` e execute:
+
+```bash
+python scripts/run_pipeline.py
+```
+
+A análise exploratória pode ser aberta em `notebooks/analise_olist.ipynb`. O fluxo completo e os detalhes de reprodução estão descritos em [docs/execucao-local.md](./docs/execucao-local.md).
+
 ## Notebook
 
 A análise exploratória e a apresentação dos resultados estão em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb).
