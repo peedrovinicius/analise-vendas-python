@@ -2,10 +2,12 @@ import pandas as pd
 import pytest
 
 from src.analytics.sales_analysis import (
+    category_revenue,
     customer_purchase_frequency,
     monthly_sales,
     repeat_customer_rate,
     sales_by_state,
+    top_n_revenue_share,
 )
 
 
@@ -19,6 +21,7 @@ def _sales() -> pd.DataFrame:
             "seller_id": ["s1", "s1", "s2"],
             "price": [100.0, 50.0, 200.0],
             "freight_value": [10.0, 5.0, 20.0],
+            "product_category_name_english": ["beauty", "beauty", "sports"],
             "order_purchase_timestamp": [
                 "2018-01-15 10:00:00",
                 "2018-02-15 10:00:00",
@@ -52,3 +55,15 @@ def test_customer_purchase_frequency_counts_distinct_orders() -> None:
     row = result.loc[result["customer_unique_id"] == "c1"].iloc[0]
     assert row["orders"] == 2
     assert row["revenue"] == pytest.approx(150.0)
+
+
+def test_category_revenue_calculates_share() -> None:
+    result = category_revenue(_sales())
+    assert result.loc[0, "revenue"] == pytest.approx(200.0)
+    assert result["revenue_share"].sum() == pytest.approx(1.0)
+
+
+def test_top_n_revenue_share_is_bounded() -> None:
+    result = sales_by_state(_sales())
+    assert top_n_revenue_share(result, 1) == pytest.approx(200 / 350)
+    assert top_n_revenue_share(result, 10) == pytest.approx(1.0)
