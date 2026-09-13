@@ -1,4 +1,4 @@
-"""Métricas de negócio para a base Brazilian E-Commerce Public Dataset by Olist."""
+"""Métricas de negócio para a análise de vendas da Olist."""
 
 from __future__ import annotations
 
@@ -6,12 +6,7 @@ import pandas as pd
 
 
 def calculate_sales_kpis(sales: pd.DataFrame) -> dict[str, float | int]:
-    """Calcula KPIs sobre uma visão no nível de item de pedido.
-
-    A função utiliza somente linhas marcadas como vendas realizadas por
-    ``is_realized_sale``. O valor de venda considera apenas ``price``; frete é
-    mantido como métrica separada para evitar misturar conceitos.
-    """
+    """Calcula KPIs sobre uma visão no nível de item de pedido."""
     required = {
         "is_realized_sale",
         "order_id",
@@ -41,8 +36,6 @@ def calculate_sales_kpis(sales: pd.DataFrame) -> dict[str, float | int]:
         "total_orders": total_orders,
         "total_customers": total_customers,
         "total_products": total_products,
-        "average_order_value": gross_revenue / total_orders
-        if total_orders
-        else 0.0,
+        "average_order_value": gross_revenue / total_orders if total_orders else 0.0,
         "average_item_price": gross_revenue / total_items if total_items else 0.0,
     }
