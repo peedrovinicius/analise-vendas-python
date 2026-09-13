@@ -3,9 +3,9 @@ requires = ["setuptools==82.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sistema-gestao-analise-vendas"
+name = "analise-vendas-python"
 version = "0.1.0"
-description = "Projeto de dados e aplicação baseado no Brazilian E-Commerce Public Dataset by Olist."
+description = "Projeto de engenharia e análise de dados com Python baseado no Brazilian E-Commerce Public Dataset by Olist."
 requires-python = ">=3.11,<3.12"
 dependencies = [
     "pandas==3.0.5",
