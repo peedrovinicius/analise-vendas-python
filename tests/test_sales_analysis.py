@@ -4,6 +4,7 @@ import pytest
 from src.analytics.sales_analysis import (
     category_revenue,
     customer_purchase_frequency,
+    customer_segment_summary,
     monthly_sales,
     repeat_customer_rate,
     sales_by_seller,
@@ -71,6 +72,45 @@ def test_customer_purchase_frequency_counts_distinct_orders() -> None:
     assert row["revenue"] == pytest.approx(150.0)
 
 
+def test_customer_segment_summary_separates_repeat_and_one_time_customers() -> None:
+    result = customer_segment_summary(_sales())
+
+    one_time = result.loc[result["customer_segment"] == "one_time"].iloc[0]
+    repeat = result.loc[result["customer_segment"] == "repeat"].iloc[0]
+
+    assert one_time["customers"] == 1
+    assert one_time["orders"] == 1
+    assert one_time["items"] == 1
+    assert one_time["revenue"] == pytest.approx(200.0)
+    assert one_time["revenue_share"] == pytest.approx(200 / 350)
+    assert one_time["average_orders_per_customer"] == pytest.approx(1.0)
+    assert one_time["average_revenue_per_customer"] == pytest.approx(200.0)
+
+    assert repeat["customers"] == 1
+    assert repeat["orders"] == 2
+    assert repeat["items"] == 2
+    assert repeat["revenue"] == pytest.approx(150.0)
+    assert repeat["revenue_share"] == pytest.approx(150 / 350)
+    assert repeat["average_orders_per_customer"] == pytest.approx(2.0)
+    assert repeat["average_revenue_per_customer"] == pytest.approx(150.0)
+
+
+def test_customer_segment_summary_returns_empty_result_without_realized_sales() -> None:
+    result = customer_segment_summary(_sales().assign(is_realized_sale=False))
+
+    assert result.empty
+    assert list(result.columns) == [
+        "customer_segment",
+        "customers",
+        "orders",
+        "items",
+        "revenue",
+        "revenue_share",
+        "average_orders_per_customer",
+        "average_revenue_per_customer",
+    ]
+
+
 def test_category_revenue_calculates_share_aov_and_freight_ratio() -> None:
     result = category_revenue(_sales())
     row = result.loc[result["product_category_name_english"] == "sports"].iloc[0]
@@ -101,6 +141,7 @@ def test_analytics_return_empty_results_without_realized_sales() -> None:
     assert sales_by_state(sales).empty
     assert sales_by_seller(sales).empty
     assert customer_purchase_frequency(sales).empty
+    assert customer_segment_summary(sales).empty
     assert category_revenue(sales).empty
     assert repeat_customer_rate(sales) == 0.0
 
