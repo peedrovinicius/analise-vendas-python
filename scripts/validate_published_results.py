@@ -65,9 +65,7 @@ def validate_published_results(raw_dir: str | Path) -> None:
     kpis = calculate_sales_kpis(sales)
     for name in ("orders", "items", "customers"):
         if kpis[name] != EXPECTED_KPIS[name]:
-            raise AssertionError(
-                f"{name}: esperado {EXPECTED_KPIS[name]}, obtido {kpis[name]}"
-            )
+            raise AssertionError(f"{name}: esperado {EXPECTED_KPIS[name]}, obtido {kpis[name]}")
     for name in ("revenue", "freight", "revenue_with_freight"):
         _assert_close(name, float(kpis[name]), float(EXPECTED_KPIS[name]), 0.01)
     _assert_close(
@@ -78,9 +76,11 @@ def validate_published_results(raw_dir: str | Path) -> None:
     )
 
     monthly = monthly_sales(sales)
-    annual = monthly.assign(year=monthly["purchase_month_start"].dt.year).groupby("year")[
-        "revenue"
-    ].sum()
+    annual = (
+        monthly.assign(year=monthly["purchase_month_start"].dt.year)
+        .groupby("year")["revenue"]
+        .sum()
+    )
     for year, expected in EXPECTED_YEAR_REVENUE.items():
         _assert_close(f"revenue_{year}", float(annual.loc[year]), expected, 0.01)
 
@@ -101,8 +101,7 @@ def validate_published_results(raw_dir: str | Path) -> None:
     repeat_customers = int(customers["orders"].gt(1).sum())
     if repeat_customers != EXPECTED_REPEAT_CUSTOMERS:
         raise AssertionError(
-            "repeat_customers: "
-            f"esperado {EXPECTED_REPEAT_CUSTOMERS}, obtido {repeat_customers}"
+            f"repeat_customers: esperado {EXPECTED_REPEAT_CUSTOMERS}, obtido {repeat_customers}"
         )
 
     sellers = sales_by_seller(sales)

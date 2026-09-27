@@ -145,6 +145,7 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 │   ├── auditar_olist.py
 │   ├── generate_visualizations.py
 │   ├── run_pipeline.py
+│   ├── source_manifest.py
 │   └── validate_published_results.py
 ├── src/
 │   ├── analytics/
@@ -161,7 +162,8 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 │   ├── test_olist_transformation.py
 │   ├── test_pipeline.py
 │   ├── test_sales_analysis.py
-│   └── test_sales_kpis.py
+│   ├── test_sales_kpis.py
+│   └── test_source_manifest.py
 ├── requirements.txt
 ├── pyproject.toml
 └── README.md
@@ -203,6 +205,18 @@ python scripts/validate_published_results.py
 ```
 
 O comando encerra com erro se os resultados recalculados divergirem dos valores validados e documentados no projeto.
+
+Para registrar a identidade byte a byte da cópia local dos nove CSVs:
+
+```bash
+python scripts/source_manifest.py generate
+```
+
+O comando grava `dados/source-manifest.json` com SHA-256, tamanho e quantidade de registros de cada arquivo. Em execuções posteriores, a integridade pode ser conferida com:
+
+```bash
+python scripts/source_manifest.py validate
+```
 
 A análise exploratória está em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb). O fluxo completo e os detalhes de reprodução estão descritos em [docs/execucao-local.md](./docs/execucao-local.md).
 

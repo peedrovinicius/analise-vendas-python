@@ -8,6 +8,12 @@ Fonte pública disponibilizada pela Olist no Kaggle:
 
 https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
 
+## Versão de referência
+
+A página pública do Kaggle identifica atualmente o conjunto como **Version 2**, composto pelos mesmos nove arquivos utilizados pelo projeto. A identidade byte a byte da cópia efetivamente usada em uma execução é registrada localmente com `scripts/source_manifest.py`, por meio de hashes SHA-256.
+
+Essa separação é intencional: a versão declarada pelo provedor identifica a publicação, enquanto o manifesto criptográfico identifica os arquivos concretos usados na reprodução.
+
 ## Descrição
 
 O dataset contém dados de pedidos de comércio eletrônico realizados entre **2016 e 2018**, com aproximadamente **100 mil pedidos**. Os dados são comerciais e foram **anonimizados** antes da publicação.
