@@ -28,7 +28,7 @@ Antes de considerar uma alteração pronta, o projeto deve passar por:
 ruff format --check src tests scripts
 ruff check src tests scripts
 mypy src
-pytest -q --cov=src --cov-report=term-missing --cov-fail-under=80
+pytest -q --cov=src --cov-branch --cov-report=term-missing --cov-fail-under=80
 pip-audit -r requirements.txt
 pre-commit run --all-files
 ```
