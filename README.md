@@ -176,7 +176,7 @@ Ative o ambiente virtual conforme o seu sistema e instale as dependências:
 
 ```bash
 python -m pip install -r requirements.txt
-python -m pip install -e .
+python -m pip install -e . --no-deps
 ```
 
 Coloque os nove arquivos CSV da Olist em `dados/raw/` e execute:

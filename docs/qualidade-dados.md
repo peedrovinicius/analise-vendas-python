@@ -30,7 +30,7 @@ As seguintes chaves apresentaram unicidade na auditoria:
 - `order_items.(order_id, order_item_id)`: 0 duplicidades;
 - `order_payments.(order_id, payment_sequential)`: 0 duplicidades.
 
-`order_reviews.review_id` não deve ser tratado isoladamente como chave primária: foram encontrados 1.603 linhas participando de repetição de `review_id`. A combinação `review_id + order_id` não apresentou duplicidades.
+`order_reviews.review_id` não deve ser tratado isoladamente como chave primária: foram encontradas 1.603 linhas participando de repetição de `review_id`. A combinação `review_id + order_id` não apresentou duplicidades.
 
 ## Valores ausentes
 
