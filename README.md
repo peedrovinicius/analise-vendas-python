@@ -207,6 +207,6 @@ A análise exploratória está em [notebooks/analise_olist.ipynb](./notebooks/an
 
 ## Status
 
-**Análise e pipeline validados.**
+**Projeto concluído e validado.**
 
-A camada atual está focada em engenharia e análise de dados. A evolução para backend e aplicação web será desenvolvida separadamente no projeto de gerenciamento de pacientes odontológicos.
+O pipeline de dados, os indicadores, as análises e as visualizações foram revisados e estão disponíveis de forma reproduzível neste repositório.
