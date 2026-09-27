@@ -72,8 +72,12 @@ def validate_manifest(data_dir: str | Path, manifest_path: str | Path) -> None:
     validate_source_directory(directory)
 
     manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
+    if manifest.get("manifest_format_version") != MANIFEST_FORMAT_VERSION:
+        raise ValueError("Versão do formato do manifesto não suportada.")
     if manifest.get("dataset") != DATASET_SLUG:
         raise ValueError("Manifesto pertence a outro dataset.")
+    if manifest.get("kaggle_version") != KAGGLE_VERSION:
+        raise ValueError("Versão do dataset Kaggle divergente.")
     if manifest.get("hash_algorithm") != "sha256":
         raise ValueError("Algoritmo de hash do manifesto não é SHA-256.")
 

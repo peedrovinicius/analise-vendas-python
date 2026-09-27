@@ -57,3 +57,31 @@ def test_build_manifest_counts_multiline_csv_record_once(tmp_path: Path) -> None
     manifest = build_manifest(tmp_path)
 
     assert manifest["files"][EXPECTED_FILES[0]]["data_rows"] == 2
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("manifest_format_version", 999, "Versão do formato"),
+        ("kaggle_version", 999, "Versão do dataset Kaggle"),
+    ],
+)
+def test_validate_manifest_rejects_incompatible_versions(
+    tmp_path: Path,
+    field: str,
+    value: int,
+    message: str,
+) -> None:
+    _write_source_files(tmp_path)
+    manifest_path = tmp_path / "manifest.json"
+    write_manifest(tmp_path, manifest_path)
+
+    manifest = __import__("json").loads(manifest_path.read_text(encoding="utf-8"))
+    manifest[field] = value
+    manifest_path.write_text(
+        __import__("json").dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match=message):
+        validate_manifest(tmp_path, manifest_path)
