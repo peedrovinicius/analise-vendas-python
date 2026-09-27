@@ -28,7 +28,7 @@ A versão publicada é organizada em múltiplos arquivos relacionais, incluindo 
 
 ## Característica importante dos dados
 
-O dataset representa uma estrutura relacional. Um pedido pode possuir vários itens, e os itens podem estar associados a diferentes vendedores. Por isso, a definição da granularidade de cada tabela e o tratamento dos relacionamentos serão etapas obrigatórias da análise.
+O dataset representa uma estrutura relacional. Um pedido pode possuir vários itens, e os itens podem estar associados a diferentes vendedores. Por isso, a definição da granularidade de cada tabela e o tratamento dos relacionamentos são partes centrais da análise.
 
 A identificação de recompra deve considerar `customer_unique_id`, pois `customer_id` é associado individualmente aos pedidos na estrutura disponibilizada pela Olist.
 
@@ -40,15 +40,14 @@ Este projeto não redistribui os arquivos brutos do dataset. A fonte original de
 
 ## Uso no projeto
 
-A base será utilizada para construir um fluxo de análise de dados com foco em:
+A base é utilizada em um fluxo de análise de dados com foco em:
 
 - ingestão de dados públicos;
 - validação e qualidade dos dados;
 - transformação e preparação;
 - análise de vendas;
 - indicadores de negócio;
-- visualização;
-- posteriormente, uma aplicação web integrada ao processamento analítico.
+- visualização.
 
 ## Referência
 
