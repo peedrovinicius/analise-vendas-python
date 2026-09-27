@@ -151,8 +151,12 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 │   ├── validation/
 │   └── pipeline.py
 ├── tests/
+│   ├── test_olist_ingestion.py
+│   ├── test_olist_schema.py
 │   ├── test_olist_transformation.py
-│   └── test_sales_analysis.py
+│   ├── test_pipeline.py
+│   ├── test_sales_analysis.py
+│   └── test_sales_kpis.py
 ├── requirements.txt
 ├── pyproject.toml
 └── README.md
