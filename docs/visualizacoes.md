@@ -1,6 +1,14 @@
 # Visualizações analíticas
 
-As visualizações desta etapa foram geradas a partir da fato analítica de itens associados a pedidos com status `delivered`.
+As visualizações desta etapa são geradas a partir da fato analítica de itens associados a pedidos com status `delivered`.
+
+Os três SVGs publicados em `assets/` podem ser regenerados com:
+
+```bash
+python scripts/generate_visualizations.py
+```
+
+O script reutiliza as funções analíticas do projeto, evitando manter gráficos desconectados das regras de cálculo usadas nos KPIs.
 
 ## 1. Evolução mensal
 

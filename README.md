@@ -143,6 +143,7 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 │   └── receita-por-categoria.svg
 ├── scripts/
 │   ├── auditar_olist.py
+│   ├── generate_visualizations.py
 │   └── run_pipeline.py
 ├── src/
 │   ├── analytics/
@@ -152,6 +153,7 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 │   └── pipeline.py
 ├── tests/
 │   ├── test_auditar_olist.py
+│   ├── test_generate_visualizations.py
 │   ├── test_olist_ingestion.py
 │   ├── test_olist_schema.py
 │   ├── test_olist_transformation.py
@@ -184,6 +186,12 @@ Coloque os nove arquivos CSV da Olist em `dados/raw/` e execute:
 
 ```bash
 python scripts/run_pipeline.py
+```
+
+Para regenerar os três SVGs publicados no README a partir da mesma camada analítica:
+
+```bash
+python scripts/generate_visualizations.py
 ```
 
 A análise exploratória está em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb). O fluxo completo e os detalhes de reprodução estão descritos em [docs/execucao-local.md](./docs/execucao-local.md).
