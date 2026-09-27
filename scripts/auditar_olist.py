@@ -16,15 +16,15 @@ from src.ingestion.olist import EXPECTED_FILES, load_olist_tables
 DATA_DIR = Path("dados/raw")
 
 KEY_COLUMNS = {
-    "olist_orders_dataset": ["order_id"],
-    "olist_order_items_dataset": ["order_id", "order_item_id"],
-    "olist_customers_dataset": ["customer_id"],
-    "olist_products_dataset": ["product_id"],
-    "olist_sellers_dataset": ["seller_id"],
-    "olist_order_payments_dataset": [],
-    "olist_order_reviews_dataset": [],
-    "olist_geolocation_dataset": [],
-    "product_category_name_translation": ["product_category_name"],
+    "customers": ["customer_id"],
+    "geolocation": [],
+    "order_items": ["order_id", "order_item_id"],
+    "order_payments": ["order_id", "payment_sequential"],
+    "order_reviews": ["review_id", "order_id"],
+    "orders": ["order_id"],
+    "products": ["product_id"],
+    "sellers": ["seller_id"],
+    "category_translation": ["product_category_name"],
 }
 
 

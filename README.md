@@ -151,6 +151,7 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 │   ├── validation/
 │   └── pipeline.py
 ├── tests/
+│   ├── test_auditar_olist.py
 │   ├── test_olist_ingestion.py
 │   ├── test_olist_schema.py
 │   ├── test_olist_transformation.py
