@@ -44,3 +44,16 @@ def test_validate_manifest_detects_modified_source(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="Falha de integridade"):
         validate_manifest(tmp_path, manifest_path)
+
+
+def test_build_manifest_counts_multiline_csv_record_once(tmp_path: Path) -> None:
+    _write_source_files(tmp_path)
+    target = tmp_path / EXPECTED_FILES[0]
+    target.write_text(
+        'column_a,column_b\n"value with\nline break",ok\nsecond,row\n',
+        encoding="utf-8",
+    )
+
+    manifest = build_manifest(tmp_path)
+
+    assert manifest["files"][EXPECTED_FILES[0]]["data_rows"] == 2

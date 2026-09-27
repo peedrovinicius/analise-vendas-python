@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 from pathlib import Path
@@ -24,10 +25,11 @@ def sha256_file(path: Path) -> str:
 
 
 def count_data_rows(path: Path) -> int:
-    """Conta registros CSV desconsiderando a linha de cabeçalho."""
-    with path.open("rb") as handle:
-        line_count = sum(1 for _ in handle)
-    return max(line_count - 1, 0)
+    """Conta registros CSV lógicos desconsiderando o cabeçalho."""
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.reader(handle)
+        row_count = sum(1 for _ in reader)
+    return max(row_count - 1, 0)
 
 
 def build_manifest(data_dir: str | Path) -> dict[str, object]:
