@@ -1,6 +1,6 @@
 import pandas as pd
-
 from scripts.auditar_olist import KEY_COLUMNS, audit_dataframe
+
 from src.ingestion.olist import DATASET_FILES
 
 
