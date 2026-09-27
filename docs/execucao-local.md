@@ -53,7 +53,17 @@ python scripts/generate_visualizations.py
 
 O comando recria em `assets/` os SVGs de evolução mensal, receita por UF e receita por categoria usando a mesma fato analítica e as mesmas regras de venda realizada do projeto.
 
-## 6. Executar a auditoria dos arquivos
+## 6. Validar os resultados publicados
+
+```bash
+python scripts/validate_published_results.py
+```
+
+A validação recalcula KPIs consolidados, receita anual, principais estados, principais categorias, recorrência de clientes e concentração de vendedores. Qualquer divergência em relação aos resultados publicados encerra o comando com erro.
+
+Essa verificação depende dos nove CSVs originais em `dados/raw/` e funciona como teste de integração sobre a base completa, separado dos testes sintéticos executados pela CI.
+
+## 7. Executar a auditoria dos arquivos
 
 ```bash
 python scripts/auditar_olist.py
@@ -61,7 +71,7 @@ python scripts/auditar_olist.py
 
 A auditoria informa características estruturais dos arquivos, incluindo volume, colunas, nulos, duplicidades e verificações de chaves. Ela não altera os dados.
 
-## 7. Executar os testes e gates de qualidade
+## 8. Executar os testes e gates de qualidade
 
 ```bash
 ruff format --check src tests scripts

@@ -144,7 +144,8 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 ├── scripts/
 │   ├── auditar_olist.py
 │   ├── generate_visualizations.py
-│   └── run_pipeline.py
+│   ├── run_pipeline.py
+│   └── validate_published_results.py
 ├── src/
 │   ├── analytics/
 │   ├── ingestion/
@@ -155,6 +156,7 @@ Detalhes da fonte, arquivos, características e licença estão documentados em 
 │   ├── test_auditar_olist.py
 │   ├── test_generate_visualizations.py
 │   ├── test_olist_ingestion.py
+│   ├── test_published_results_validation.py
 │   ├── test_olist_schema.py
 │   ├── test_olist_transformation.py
 │   ├── test_pipeline.py
@@ -193,6 +195,14 @@ Para regenerar os três SVGs publicados no README a partir da mesma camada anal�
 ```bash
 python scripts/generate_visualizations.py
 ```
+
+Para confrontar automaticamente a execução integral com os KPIs, rankings e concentrações publicados:
+
+```bash
+python scripts/validate_published_results.py
+```
+
+O comando encerra com erro se os resultados recalculados divergirem dos valores validados e documentados no projeto.
 
 A análise exploratória está em [notebooks/analise_olist.ipynb](./notebooks/analise_olist.ipynb). O fluxo completo e os detalhes de reprodução estão descritos em [docs/execucao-local.md](./docs/execucao-local.md).
 
