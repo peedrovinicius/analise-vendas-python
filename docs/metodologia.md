@@ -40,4 +40,4 @@ A ingestão, validação, transformação, cálculo dos KPIs, análises de negó
 
 Os resultados publicados em `docs/insights-negocio.md` foram recalculados e conferidos contra `docs/insights-iniciais.md`.
 
-A camada de visualização já possui artefatos documentados em `docs/visualizacoes.md`. Evoluções futuras podem adicionar uma aplicação web sem alterar as regras analíticas consolidadas na camada `src/`.
+A camada de visualização possui artefatos documentados em `docs/visualizacoes.md`, gerados a partir das regras analíticas consolidadas na camada `src/`.

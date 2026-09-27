@@ -104,7 +104,7 @@ Os joins dimensionais implementados no código usam validação de cardinalidade
 
 ## Estado atual
 
-A auditoria, as regras de qualidade e a transformação principal já estão implementadas e documentadas. A camada `processed` permanece reservada para uma futura materialização de dados tratados; os KPIs atuais são calculados diretamente a partir da fato analítica construída pela camada de transformação.
+A auditoria, as regras de qualidade e a transformação principal estão implementadas e documentadas. O diretório `dados/processed/` é mantido vazio por design: os KPIs são calculados diretamente a partir da fato analítica construída em memória pela camada de transformação, sem necessidade de materializar um dataset intermediário no fluxo atual.
 
 ## Decisões de qualidade
 
