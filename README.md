@@ -233,6 +233,10 @@ A análise exploratória está em [notebooks/analise_olist.ipynb](./notebooks/an
 - [Visualizações](./docs/visualizacoes.md)
 - [Storytelling](./docs/storytelling.md)
 
+## Contribuindo
+
+Contribuições externas são bem-vindas. Antes de abrir um Pull Request, consulte o [guia de contribuição](CONTRIBUTING.md) e use as issues para alinhar o escopo da mudança.
+
 ## Limitações
 
 - Receita não representa lucro ou margem.

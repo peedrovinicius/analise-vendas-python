@@ -1,0 +1,31 @@
+name: Relatar problema
+description: Reporte um erro de pipeline, cálculo, validação, visualização ou documentação.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: Obrigado por ajudar a melhorar a análise de vendas.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Descreva o comportamento observado.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento esperado
+      description: O que deveria ter acontecido?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: Informe arquivo, etapa do pipeline, KPI ou visualização envolvida.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidências
+      description: Inclua mensagem de erro, saída de teste ou passos mínimos para reprodução.
