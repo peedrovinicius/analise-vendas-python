@@ -1,5 +1,4 @@
 import pytest
-
 from scripts.validate_published_results import _assert_close
 
 

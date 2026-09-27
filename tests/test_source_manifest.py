@@ -1,8 +1,8 @@
 from pathlib import Path
 
 import pytest
-
 from scripts.source_manifest import build_manifest, validate_manifest, write_manifest
+
 from src.ingestion.olist import EXPECTED_FILES
 
 
