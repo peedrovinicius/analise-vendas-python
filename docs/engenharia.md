@@ -61,7 +61,7 @@ O `.pre-commit-config.yaml` executa Ruff e formatação localmente antes dos com
 
 ## Reprodutibilidade
 
-As dependências diretas estão fixadas. O projeto ainda não publica um lockfile transitivo gerado por um resolvedor como `uv` ou Poetry; essa limitação fica declarada em vez de ser ocultada.
+As dependências diretas estão fixadas. O projeto não publica um lockfile transitivo gerado por um resolvedor como `uv` ou Poetry.
 
 ## Princípios
 
@@ -69,4 +69,3 @@ As dependências diretas estão fixadas. O projeto ainda não publica um lockfil
 2. Métricas preservam a granularidade definida no modelo.
 3. Falhas de estrutura e qualidade são explícitas.
 4. Nenhum resultado é publicado sem rastreabilidade para dados e regras.
-5. Ferramentas entram por necessidade técnica, não por quantidade.
