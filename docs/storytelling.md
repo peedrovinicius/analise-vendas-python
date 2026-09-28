@@ -1,4 +1,4 @@
-# Storytelling analítico
+# Leitura analítica
 
 ## Contexto
 
