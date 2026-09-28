@@ -6,7 +6,7 @@
 
 Projeto de engenharia e análise de dados construído a partir do **Brazilian E-Commerce Public Dataset by Olist**, uma base pública e anonimizada de comércio eletrônico brasileiro.
 
-## O case
+## Objetivo
 
 O objetivo é transformar dados transacionais de e-commerce em indicadores confiáveis para entender **receita, comportamento de clientes e concentração das vendas**.
 
@@ -231,7 +231,7 @@ A análise exploratória está em [notebooks/analise_olist.ipynb](./notebooks/an
 - [Insights de negócio](./docs/insights-negocio.md)
 - [Auditoria inicial](./docs/auditoria-inicial.md)
 - [Visualizações](./docs/visualizacoes.md)
-- [Storytelling](./docs/storytelling.md)
+- [Leitura analítica](./docs/storytelling.md)
 
 ## Contribuindo
 
