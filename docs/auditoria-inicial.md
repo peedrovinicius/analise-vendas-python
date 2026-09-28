@@ -83,7 +83,7 @@ Pagamentos e avaliações podem possuir múltiplos registros por pedido. Unir es
 
 Para os KPIs de receita realizada, são considerados itens associados a pedidos com `order_status = delivered`. `price` representa a receita dos itens e `freight_value` é analisado separadamente.
 
-## Regra de ouro
+## Critério de publicação
 
 Nenhuma métrica do projeto deve ser publicada antes de sua definição, granularidade e regra de cálculo estarem documentadas e validadas sobre os dados ingeridos.
 
