@@ -4,6 +4,8 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-3.x-150458?logo=pandas&logoColor=white)
 
+[Resultados](#principais-resultados) · [Insights](docs/insights-negocio.md) · [Issues](https://github.com/peedrovinicius/analise-vendas-python/issues) · [Como contribuir](CONTRIBUTING.md)
+
 Projeto de engenharia e análise de dados construído a partir do **Brazilian E-Commerce Public Dataset by Olist**, uma base pública e anonimizada de comércio eletrônico brasileiro.
 
 ## Objetivo
