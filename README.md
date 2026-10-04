@@ -184,7 +184,7 @@ python -m venv .venv
 Ative o ambiente virtual conforme o seu sistema e instale as dependências:
 
 ```bash
-python -m pip install -r requirements.txt
+python -m pip install --require-hashes -r requirements-lock.txt
 python -m pip install -e . --no-deps
 ```
 
@@ -253,3 +253,18 @@ Contribuições externas são bem-vindas. Antes de abrir um Pull Request, consul
 **Projeto concluído e validado.**
 
 O pipeline de dados, os indicadores, as análises e as visualizações foram revisados e estão disponíveis de forma reproduzível neste repositório.
+### Atualizar o ambiente fixado
+
+Use Python 3.11. `requirements-lock.txt` fixa as dependências diretas e transitivas com hashes, incluindo os extras de desenvolvimento. O CI instala e audita esse arquivo. `requirements.txt` mantém a lista curta de dependências diretas para consulta.
+
+Após alterar as versões em `pyproject.toml` e manter `requirements.txt` alinhado, regenere o lockfile e execute os checks:
+
+```bash
+uv pip compile pyproject.toml --extra dev --python-version 3.11 --universal --generate-hashes --output-file requirements-lock.txt
+python -m pip install --require-hashes -r requirements-lock.txt
+python -m pip install -e . --no-deps
+python -m pytest -q
+pip-audit -r requirements-lock.txt
+```
+
+A resolução inclui marcadores de plataforma. A validação automatizada do ambiente é executada em Linux/Python 3.11; outras plataformas precisam de sua própria verificação.
