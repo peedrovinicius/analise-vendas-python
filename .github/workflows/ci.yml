@@ -30,7 +30,7 @@ jobs:
         run: ruff format --check src tests scripts
 
       - name: Lint
-        run: ruff check src tests scripts
+        run: ruff check src tests scripts notebooks
 
       - name: Type check
         run: mypy src
