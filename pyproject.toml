@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Projeto de engenharia e análise de dados com Python baseado no Brazilian E-Commerce Public Dataset by Olist."
 requires-python = ">=3.11,<3.12"
 dependencies = [
-    "pandas==3.0.5",
+    "pandas==3.0.6",
     "matplotlib==3.11.2",
     "pandera==0.33.1",
 ]
