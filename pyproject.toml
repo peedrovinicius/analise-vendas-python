@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools==82.0.0"]
+requires = ["setuptools==84.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Projeto de engenharia e análise de dados com Python baseado no Brazilian E-Commerce Public Dataset by Olist."
 requires-python = ">=3.11,<3.12"
 dependencies = [
-    "pandas==3.0.5",
+    "pandas==3.0.6",
     "matplotlib==3.11.2",
     "pandera==0.33.1",
 ]
@@ -18,8 +18,8 @@ dev = [
     "jupyterlab==4.6.4",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
-    "ruff==0.16.7",
-    "mypy==2.3.1",
+    "ruff==0.16.10",
+    "mypy==2.4.0",
     "pip-audit==2.10.1",
     "pre-commit==4.6.2",
 ]
