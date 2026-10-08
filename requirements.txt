@@ -5,6 +5,6 @@ pandera==0.33.1
 pytest==9.1.1
 pytest-cov==7.1.0
 ruff==0.16.7
-mypy==2.3.1
+mypy==2.4.0
 pip-audit==2.10.1
 pre-commit==4.6.2
